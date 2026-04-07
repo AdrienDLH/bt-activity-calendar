@@ -170,7 +170,9 @@ export function CalendarClientPage({
                 Neither benefits from the filter bar.
                 ---------------------------------------- */}
             {activeTab === "list" && (
-              <div className="flex items-end justify-between gap-4 mb-4">
+              <div className="flex items-end justify-between gap-4 mb-4 overflow-hidden">
+                {/* min-w-0 prevents the flex item from overflowing its container */}
+                <div className="min-w-0 flex-1">
                 <FilterBar
                   activityTypes={activityTypes}
                   selectedTypes={selectedTypes}
@@ -179,6 +181,7 @@ export function CalendarClientPage({
                   onTimeChange={handleTimeChange}
                   onClearFilters={handleClearFilters}
                 />
+                </div>
                 {/* Right column: Clear filters (top) + activity count (bottom) */}
                 <div className="flex flex-col items-end gap-2 shrink-0 pb-4">
                   {(selectedTypes.length > 0 || selectedTimes.length > 0) && (

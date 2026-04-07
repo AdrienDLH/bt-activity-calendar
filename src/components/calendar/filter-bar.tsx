@@ -80,71 +80,78 @@ export function FilterBar({
       transition={{ duration: 0.3, delay: 0.2 }}
       className="py-4"
     >
-      <div className="space-y-4">
+      {/* overflow-hidden on the outer wrapper ensures chip rows never
+          cause page-level horizontal scroll — they scroll within themselves */}
+      <div className="space-y-4 overflow-hidden w-full">
 
         {/* ========================================
             TIME-OF-DAY TOGGLES
-            Shows label + time range: e.g. "Rise (6am – 9am)"
+            Label sits above the scrollable chip row
             ======================================== */}
-        <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
-          <span className="text-sm font-medium text-[#153E35] shrink-0 mr-1">
-            Time:
+        <div className="space-y-2">
+          <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#153E35]">
+            Time
           </span>
-          {(Object.keys(TIME_OF_DAY_CONFIG) as TimeOfDay[]).map((time) => {
-            const config = TIME_OF_DAY_CONFIG[time];
-            const isSelected = selectedTimes.includes(time);
-
-            return (
-              <button
-                key={time}
-                onClick={() => onTimeChange(time)}
-                title={config.description}
-                className={cn(
-                  "inline-flex items-center gap-1.5 px-3 pt-[8px] pb-[8px] rounded-[2px]",
-                  "text-[11px] font-semibold uppercase tracking-[0.1em] transition-all duration-200",
-                  "border touch-target shrink-0 leading-none whitespace-nowrap",
-                  isSelected
-                    ? "bg-[#173F35] text-white border-[#173F35]"
-                    : "bg-background text-[#85754E] border-[#85754E] hover:border-[#85754E]/50 hover:text-[#85754E]"
-                )}
-              >
-                <span>{config.label}</span>
-                <span className="text-xs">({config.timeRange})</span>
-                {isSelected && <X className="h-3 w-3 shrink-0" />}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* ========================================
-            ACTIVITY TYPE CHIPS
-            Scrollable list of activity categories
-            ======================================== */}
-        {activityTypes.length > 0 && (
-          <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
-            <span className="text-sm font-medium text-[#153E35] shrink-0 mr-1">
-              Type:
-            </span>
-            {activityTypes.map((type) => {
-              const isSelected = selectedTypes.includes(type.id);
+          {/* Chips scroll horizontally within this container only */}
+          <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 w-full">
+            {(Object.keys(TIME_OF_DAY_CONFIG) as TimeOfDay[]).map((time) => {
+              const config = TIME_OF_DAY_CONFIG[time];
+              const isSelected = selectedTimes.includes(time);
 
               return (
                 <button
-                  key={type.id}
-                  onClick={() => onTypeChange(type.id)}
+                  key={time}
+                  onClick={() => onTimeChange(time)}
+                  title={config.description}
                   className={cn(
-                    "inline-flex items-center gap-1.5 px-4 pt-[8px] pb-[8px] rounded-[2px] text-[11px] font-semibold uppercase tracking-[0.1em]",
-                    "transition-all duration-200 border touch-target shrink-0 leading-none whitespace-nowrap",
+                    "inline-flex items-center gap-1.5 px-3 pt-[8px] pb-[8px] rounded-[2px]",
+                    "text-[11px] font-semibold uppercase tracking-[0.1em] transition-all duration-200",
+                    "border touch-target shrink-0 leading-none whitespace-nowrap",
                     isSelected
                       ? "bg-[#173F35] text-white border-[#173F35]"
                       : "bg-background text-[#85754E] border-[#85754E] hover:border-[#85754E]/50 hover:text-[#85754E]"
                   )}
                 >
-                  <span>{type.name}</span>
+                  <span>{config.label}</span>
+                  <span className="text-xs">({config.timeRange})</span>
                   {isSelected && <X className="h-3 w-3 shrink-0" />}
                 </button>
               );
             })}
+          </div>
+        </div>
+
+        {/* ========================================
+            ACTIVITY TYPE CHIPS
+            Label sits above the scrollable chip row
+            ======================================== */}
+        {activityTypes.length > 0 && (
+          <div className="space-y-2">
+            <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#153E35]">
+              Type
+            </span>
+            <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 w-full">
+              {activityTypes.map((type) => {
+                const isSelected = selectedTypes.includes(type.id);
+
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => onTypeChange(type.id)}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 px-4 pt-[8px] pb-[8px] rounded-[2px] text-[11px] font-semibold uppercase tracking-[0.1em]",
+                      "transition-all duration-200 border touch-target shrink-0 leading-none whitespace-nowrap",
+                      isSelected
+                        ? "bg-[#173F35] text-white border-[#173F35]"
+                        : "bg-background text-[#85754E] border-[#85754E] hover:border-[#85754E]/50 hover:text-[#85754E]"
+                    )}
+                  >
+                    <span>{type.name}</span>
+                    {isSelected && <X className="h-3 w-3 shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
