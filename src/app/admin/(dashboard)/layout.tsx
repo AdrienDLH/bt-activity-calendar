@@ -40,11 +40,13 @@ export default async function DashboardLayout({
 
   // ── Profile Fetch ────────────────────────────────────────────────────────
   // RLS policies ensure each user can only read their own profile
+  // Cast needed because our minimal Database type lacks Relationships fields
+  // required by @supabase/supabase-js v2 for full generic inference
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.id)
-    .single();
+    .single() as { data: Profile | null; error: unknown };
 
   if (!profile) {
     // User exists in auth but has no profile row — redirect to login
