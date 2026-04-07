@@ -170,20 +170,31 @@ export function CalendarClientPage({
                 Neither benefits from the filter bar.
                 ---------------------------------------- */}
             {activeTab === "list" && (
-              <div className="flex items-end justify-between gap-4 mb-4 overflow-hidden">
+              <div className="mb-4 overflow-hidden">
                 {/* min-w-0 prevents the flex item from overflowing its container */}
-                <div className="min-w-0 flex-1">
-                <FilterBar
-                  activityTypes={activityTypes}
-                  selectedTypes={selectedTypes}
-                  selectedTimes={selectedTimes}
-                  onTypeChange={handleTypeChange}
-                  onTimeChange={handleTimeChange}
-                  onClearFilters={handleClearFilters}
-                />
+                <div className="min-w-0">
+                  <FilterBar
+                    activityTypes={activityTypes}
+                    selectedTypes={selectedTypes}
+                    selectedTimes={selectedTimes}
+                    onTypeChange={handleTypeChange}
+                    onTimeChange={handleTimeChange}
+                    onClearFilters={handleClearFilters}
+                  />
                 </div>
-                {/* Right column: Clear filters (top) + activity count (bottom) */}
-                <div className="flex flex-col items-end gap-2 shrink-0 pb-4">
+                {/* Below sliders: activity count + clear filters inline */}
+                <div className="flex items-center justify-between mt-1">
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-sm text-[#153E35]"
+                  >
+                    Showing{" "}
+                    <span className="font-medium">
+                      {filteredActivities.length}
+                    </span>{" "}
+                    activit{filteredActivities.length === 1 ? "y" : "ies"}
+                  </motion.p>
                   {(selectedTypes.length > 0 || selectedTimes.length > 0) && (
                     <motion.button
                       initial={{ opacity: 0, scale: 0.95 }}
@@ -194,17 +205,6 @@ export function CalendarClientPage({
                       Clear filters
                     </motion.button>
                   )}
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-sm text-[#153E35]"
-                  >
-                    Showing{" "}
-                    <span className="font-medium text-[#153E35]">
-                      {filteredActivities.length}
-                    </span>{" "}
-                    activit{filteredActivities.length === 1 ? "y" : "ies"}
-                  </motion.p>
                 </div>
               </div>
             )}
