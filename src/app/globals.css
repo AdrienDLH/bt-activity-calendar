@@ -1,0 +1,354 @@
+/**
+ * GLOBAL STYLES - Banyan Tree Luxury Hotel Activity Calendar
+ *
+ * This file establishes the design system foundation:
+ * 1. Tailwind CSS base/components/utilities
+ * 2. CSS custom properties (variables) for theming
+ * 3. Base typography and accessibility defaults
+ *
+ * COLOR PALETTE REFERENCE:
+ * - Background (Stone):  #E7E6E2 / hsl(48, 9%, 90%)
+ * - Text (Forest):       #082B26 / hsl(171, 69%, 10%)
+ * - Primary (Tan):       #BAA382 / hsl(35, 29%, 62%)
+ * - Filter Active:       #173F35 / hsl(165, 47%, 17%)
+ * - Cards:               #FFFFFF
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * CSS CUSTOM PROPERTIES
+ *
+ * These variables power Shadcn/UI components and can be
+ * easily adjusted for theming. HSL format allows for
+ * dynamic opacity changes.
+ *
+ * To modify a color:
+ * 1. Find the variable below
+ * 2. Change the HSL values (hue saturation lightness)
+ * 3. The entire app will update automatically
+ */
+@layer base {
+  :root {
+    /* ========================================
+       BRAND COLORS
+       ======================================== */
+
+    /* Main background - Stone (#E7E6E2) */
+    --background: 48 9% 90%;
+
+    /* Primary text - #082B26 (forced via direct hex on body/headings above) */
+    --foreground: 171 69% 10%;
+
+    /* ========================================
+       CARD & SURFACE COLORS
+       ======================================== */
+
+    /* Cards use pure white for contrast against stone background */
+    --card: 0 0% 100%;
+    --card-foreground: 171 69% 10%;
+
+    /* Popover/dropdown backgrounds */
+    --popover: 0 0% 100%;
+    --popover-foreground: 171 69% 10%;
+
+    /* ========================================
+       PRIMARY COLOR (Gold Accent)
+       ======================================== */
+
+    /* Primary button color - Bronze (#85754E) */
+    --primary: 38 26% 41%;
+    --primary-foreground: 0 0% 100%;
+
+    /* ========================================
+       SECONDARY & MUTED COLORS
+       ======================================== */
+
+    /* Secondary - Lighter tone for secondary buttons */
+    --secondary: 48 7% 86%;
+    --secondary-foreground: 171 69% 10%;
+
+    /* Muted - For disabled states and subtle backgrounds */
+    --muted: 48 6% 84%;
+    --muted-foreground: 171 30% 35%;
+
+    /* Accent - Hover states and highlights */
+    --accent: 48 7% 88%;
+    --accent-foreground: 171 69% 10%;
+
+    /* ========================================
+       SEMANTIC COLORS
+       ======================================== */
+
+    /* Destructive - Error states (keeping red for clarity) */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* ========================================
+       FORM & BORDER COLORS
+       ======================================== */
+
+    /* Subtle borders */
+    --border: 171 10% 80%;
+    --input: 171 10% 80%;
+
+    /* Focus ring - Bronze accent for accessibility */
+    --ring: 38 26% 41%;
+
+    /* ========================================
+       SPACING & SIZING
+       ======================================== */
+
+    /* Border radius - 0px for strict square aesthetics */
+    --radius: 0px;
+
+    /* Safe area for mobile devices (iPhone notch, etc.) */
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /**
+   * DARK MODE VARIABLES
+   *
+   * Future enhancement: Dark mode support
+   * Currently mirrors light mode but can be customized
+   */
+  .dark {
+    --background: 27 30% 8%;
+    --foreground: 36 36% 96%;
+    --card: 27 25% 12%;
+    --card-foreground: 36 36% 96%;
+    --popover: 27 25% 12%;
+    --popover-foreground: 36 36% 96%;
+    --primary: 38 43% 60%;
+    --primary-foreground: 27 33% 13%;
+    --secondary: 27 20% 18%;
+    --secondary-foreground: 36 36% 96%;
+    --muted: 27 15% 20%;
+    --muted-foreground: 36 20% 65%;
+    --accent: 27 20% 18%;
+    --accent-foreground: 36 36% 96%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 27 15% 25%;
+    --input: 27 15% 25%;
+    --ring: 38 43% 60%;
+  }
+}
+
+/**
+ * BASE STYLES
+ *
+ * Global defaults for the entire application.
+ * These ensure consistent rendering across browsers.
+ */
+@layer base {
+
+  /* Apply smooth scrolling and text antialiasing globally */
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Default body styling — bg from CSS var, text forced to exact brand hex.
+     We use the hex directly (not the HSL variable) to guarantee the exact
+     #082B26 dark forest color renders correctly across all browsers. */
+  body {
+    @apply bg-background;
+    color: #153E35 !important;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Ensure all elements use border-box sizing */
+  *,
+  *::before,
+  *::after {
+    @apply border-border;
+  }
+
+  /**
+   * FOCUS STYLES
+   *
+   * Accessible focus indicators using the gold accent.
+   * These appear on keyboard navigation (not mouse clicks).
+   */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /**
+   * REDUCED MOTION SUPPORT
+   *
+   * Respects user's system preference for reduced motion.
+   * Important for accessibility (WCAG 2.2 AA compliance).
+   */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /**
+   * TYPOGRAPHY DEFAULTS
+   *
+   * Base heading styles with the brown text color.
+   */
+  /* Headings use the exact hex to avoid any HSL rounding shifting the hue */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold;
+    color: #153E35;
+  }
+
+  /* Main Titles (Reforma Negra, Uppercase, 15% tracking) */
+  h1,
+  h2 {
+    font-family: theme('fontFamily.reforma-negra');
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  /* Secondary Titles (Reforma Gris, Sentence Case, 2% tracking) */
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: theme('fontFamily.reforma-gris');
+    letter-spacing: 0.02em;
+    /* Explicitly un-setting uppercase just in case */
+    text-transform: none;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl;
+  }
+
+  /* Paragraph spacing */
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* Link styling with gold accent */
+  a {
+    @apply text-primary hover:underline transition-colors duration-200;
+  }
+}
+
+/**
+ * COMPONENT STYLES
+ *
+ * Reusable component classes that extend Tailwind.
+ * These follow the luxury design system.
+ */
+@layer components {
+
+  /**
+   * CARD COMPONENT
+   *
+   * Luxurious card with soft shadow and square corners.
+   * Use: <div class="luxury-card">...</div>
+   */
+  .luxury-card {
+    @apply bg-card rounded-none shadow-sm border border-border/50;
+    @apply transition-shadow duration-300 ease-out;
+  }
+
+  .luxury-card:hover {
+    @apply shadow-md;
+  }
+
+  /**
+   * TOUCH TARGET
+   *
+   * Ensures minimum 44x44px touch targets per Apple HIG.
+   * Use: <button class="touch-target">...</button>
+   */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /**
+   * SKELETON LOADER
+   *
+   * Shimmer effect for loading states.
+   * Use: <div class="skeleton h-4 w-32"></div>
+   */
+  .skeleton {
+    @apply relative overflow-hidden bg-muted rounded-none;
+    @apply before:absolute before:inset-0;
+    @apply before:-translate-x-full before:bg-gradient-to-r;
+    @apply before:from-transparent before:via-white/40 before:to-transparent;
+    @apply before:animate-shimmer;
+  }
+}
+
+/**
+ * UTILITY CLASSES
+ *
+ * Custom utilities for common patterns.
+ */
+@layer utilities {
+
+  /**
+   * SAFE AREA PADDING
+   *
+   * Adds padding for iPhone notch/home indicator.
+   * Use: <nav class="pb-safe">...</nav>
+   */
+  .pb-safe {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .pt-safe {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  /**
+   * TEXT BALANCE
+   *
+   * Improves text wrapping for headings.
+   * Use: <h1 class="text-balance">...</h1>
+   */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /**
+   * HIDE SCROLLBAR
+   *
+   * Hides scrollbar while maintaining scroll functionality.
+   * Use: <div class="hide-scrollbar overflow-x-auto">...</div>
+   */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
