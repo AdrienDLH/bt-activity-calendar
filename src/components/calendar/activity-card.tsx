@@ -20,8 +20,101 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Clock, MapPin, User } from "lucide-react";
 import { format, parseISO } from "date-fns";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Activity, ActivityType, TimeOfDay } from "@/types/database";
+
+// ─── Tag overflow pill ────────────────────────────────────────────────────────
+// Renders as many tags as fit in the container width, then shows "+X" for the
+// rest. Uses a hidden measurement layer + ResizeObserver so it reacts correctly
+// to any card width (mobile, tablet, desktop, grid changes).
+
+const TAG_GAP = 6; // matches gap-1.5
+
+// SSR-safe version of useLayoutEffect (no-op on server)
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+const TAG_CLS =
+  "shrink-0 px-2 pt-[4px] pb-[5px] rounded-[2px] text-[11px] bg-[#DDC9A3] text-[#85754E] uppercase tracking-[0.1em] font-semibold leading-none";
+const PILL_CLS =
+  "shrink-0 px-2 pt-[4px] pb-[5px] rounded-[2px] text-[11px] border border-[#DDC9A3] text-[#85754E] uppercase tracking-[0.1em] font-semibold leading-none";
+
+function TagList({ tags }: { tags: string[] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const [visibleCount, setVisibleCount] = useState(tags.length);
+
+  useIsomorphicLayoutEffect(() => {
+    const container = containerRef.current;
+    const measure = measureRef.current;
+    if (!container || !measure) return;
+
+    const calculate = () => {
+      const containerWidth = container.offsetWidth;
+      // measureRef children: tags[0..n-1] then the "+99" pill
+      const children = Array.from(measure.children) as HTMLElement[];
+      const pillEl = children[tags.length]; // last child = "+99" pill
+      const pillWidth = pillEl?.offsetWidth ?? 44;
+      const tagWidths = children.slice(0, tags.length).map((el) => el.offsetWidth);
+
+      let used = 0;
+      let count = 0;
+
+      for (let i = 0; i < tags.length; i++) {
+        const gap = i > 0 ? TAG_GAP : 0;
+        const hidden = tags.length - (i + 1);
+        // If there would still be hidden tags after showing this one,
+        // reserve space for the "+X" pill.
+        const pillSpace = hidden > 0 ? TAG_GAP + pillWidth : 0;
+        const needed = used + gap + tagWidths[i] + pillSpace;
+
+        if (needed <= containerWidth) {
+          used += gap + tagWidths[i];
+          count = i + 1;
+        } else {
+          break;
+        }
+      }
+
+      setVisibleCount(Math.max(0, count));
+    };
+
+    const ro = new ResizeObserver(calculate);
+    ro.observe(container);
+    calculate();
+    return () => ro.disconnect();
+  }, [tags]);
+
+  const hiddenCount = tags.length - visibleCount;
+
+  return (
+    <div className="relative pt-2">
+      {/* Hidden layer — renders all tags + "+99" pill to measure widths */}
+      <div
+        ref={measureRef}
+        aria-hidden
+        className="absolute inset-0 flex gap-1.5 opacity-0 pointer-events-none overflow-hidden"
+      >
+        {tags.map((tag) => (
+          <span key={tag} className={TAG_CLS}>{tag}</span>
+        ))}
+        {/* "+99" as worst-case width for the overflow pill */}
+        <span className={PILL_CLS}>+99</span>
+      </div>
+
+      {/* Visible row */}
+      <div ref={containerRef} className="flex flex-nowrap gap-1.5 overflow-hidden">
+        {tags.slice(0, visibleCount).map((tag) => (
+          <span key={tag} className={TAG_CLS}>{tag}</span>
+        ))}
+        {hiddenCount > 0 && (
+          <span className={PILL_CLS}>+{hiddenCount}</span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 /**
  * TIME_OF_DAY_STYLES
@@ -184,24 +277,9 @@ export function ActivityCard({
           </div>
         )}
 
-        {/* Tags */}
-        {/* Show up to 2 tags on one line; overflow count shown as "+X" chip */}
+        {/* Tags — dynamically fits as many as the card width allows */}
         {activity.tags && activity.tags.length > 0 && (
-          <div className="flex flex-nowrap gap-1.5 pt-2 overflow-hidden">
-            {activity.tags.slice(0, 2).map((tag) => (
-              <span
-                key={tag}
-                className="shrink-0 px-2 pt-[4px] pb-[5px] rounded-[2px] text-[11px] bg-[#DDC9A3] text-[#85754E] uppercase tracking-[0.1em] font-semibold leading-none"
-              >
-                {tag}
-              </span>
-            ))}
-            {activity.tags.length > 2 && (
-              <span className="shrink-0 px-2 pt-[4px] pb-[5px] rounded-[2px] text-[11px] border border-[#DDC9A3] text-[#85754E] uppercase tracking-[0.1em] font-semibold leading-none">
-                +{activity.tags.length - 2}
-              </span>
-            )}
-          </div>
+          <TagList tags={activity.tags} />
         )}
       </div>
     </motion.article>
