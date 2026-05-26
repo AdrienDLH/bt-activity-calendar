@@ -53,6 +53,14 @@ export default async function DashboardLayout({
     redirect("/admin/login");
   }
 
+  // ── Forced Password Reset ────────────────────────────────────────────────
+  // New users invited via /admin/users get a temporary password and
+  // must_reset_password = true. They are trapped in /admin/change-password
+  // until they choose a real password.
+  if (profile.must_reset_password) {
+    redirect("/admin/change-password");
+  }
+
   // ── Hotel Fetch ──────────────────────────────────────────────────────────
   // Only fetch a hotel if this user is assigned to one (property_admin)
   // Master admins have hotel_id = null and see all hotels

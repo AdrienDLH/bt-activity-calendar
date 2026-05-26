@@ -39,6 +39,12 @@ export interface Profile {
   role: "master_admin" | "property_admin";
   full_name: string | null;
   updated_at: string;
+  /**
+   * When true, the user is forced to /admin/change-password on next login.
+   * Set to true when a master admin invites a new user with a temporary
+   * password; cleared after the user picks their own password.
+   */
+  must_reset_password: boolean;
 }
 
 /**

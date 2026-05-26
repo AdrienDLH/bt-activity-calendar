@@ -80,9 +80,10 @@ export function FilterBar({
       transition={{ duration: 0.3, delay: 0.2 }}
       className="py-4"
     >
-      {/* overflow-hidden on the outer wrapper ensures chip rows never
-          cause page-level horizontal scroll — they scroll within themselves */}
-      <div className="space-y-4 overflow-hidden w-full">
+      {/* Chip rows scroll within themselves; on mobile they bleed past the
+          parent's px-4 gutter via -mx-4 so the scrollable area extends
+          edge-to-edge. */}
+      <div className="space-y-4 w-full">
 
         {/* ========================================
             TIME-OF-DAY TOGGLES
@@ -92,8 +93,11 @@ export function FilterBar({
           <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#153E35]">
             Time
           </span>
-          {/* Chips scroll horizontally within this container only */}
-          <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 w-full">
+          {/* Chips scroll horizontally within this container only.
+              -mx-4 px-4 makes the scroll area bleed past the page gutter
+              on mobile so chips can start at the very edge; md:mx-0 restores
+              alignment on tablet/desktop where the container is narrower. */}
+          <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 md:mx-0 md:px-0">
             {(Object.keys(TIME_OF_DAY_CONFIG) as TimeOfDay[]).map((time) => {
               const config = TIME_OF_DAY_CONFIG[time];
               const isSelected = selectedTimes.includes(time);
@@ -130,7 +134,7 @@ export function FilterBar({
             <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#153E35]">
               Type
             </span>
-            <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 w-full">
+            <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 md:mx-0 md:px-0">
               {activityTypes.map((type) => {
                 const isSelected = selectedTypes.includes(type.id);
 

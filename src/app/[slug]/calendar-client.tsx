@@ -170,7 +170,7 @@ export function CalendarClientPage({
                 Neither benefits from the filter bar.
                 ---------------------------------------- */}
             {activeTab === "list" && (
-              <div className="mb-4 overflow-hidden">
+              <div className="mb-4">
                 {/* min-w-0 prevents the flex item from overflowing its container */}
                 <div className="min-w-0">
                   <FilterBar

@@ -1,19 +1,25 @@
 /**
  * USERS PAGE — /admin/users
  *
- * Master admin only.
- * Read-only list of all user profiles with role and hotel assignment.
+ * Master admin only. Full CRUD over admin accounts:
+ *   - Add a user with a temporary password
+ *   - Edit role / hotel / full name
+ *   - Reset a user's temporary password
+ *   - Delete a user
  *
- * Future enhancement: inline role/hotel editing.
+ * Emails (auth addresses) are stored in auth.users and are not visible
+ * through an RLS-gated select on public.profiles — so we use the admin
+ * client here to join them in.
  */
 
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import { Users } from "lucide-react";
-import { format } from "date-fns";
+import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { UsersManager, type UserRow } from "./users-manager";
 import type { Profile, Hotel } from "@/types/database";
 
-// Join type — profile with hotel name
+// Row shape returned by the profile+hotel join before we splice emails in.
 type ProfileWithHotel = Profile & {
   hotels: Pick<Hotel, "name"> | null;
 };
@@ -40,20 +46,48 @@ export default async function UsersPage() {
         <div className="text-center space-y-2">
           <p className="font-reforma-gris text-lg text-[#153E35]">Access Denied</p>
           <p className="text-sm text-[#153E35]">
-            Only master administrators can view users.
+            Only master administrators can manage users.
           </p>
         </div>
       </div>
     );
   }
 
-  // ── Fetch Profiles (joined with hotel name) ───────────────────────────────
+  // ── Fetch Profiles + Hotels + Emails ──────────────────────────────────────
+  // Profiles + joined hotel name come from RLS-safe query.
   const { data: profiles } = await supabase
     .from("profiles")
     .select("*, hotels(name)")
     .order("updated_at", { ascending: false }) as {
       data: ProfileWithHotel[] | null;
     };
+
+  // Hotels list for the role/hotel selector in the manager UI.
+  const { data: hotels } = await supabase
+    .from("hotels")
+    .select("*")
+    .order("name") as { data: Hotel[] | null };
+
+  // Admin client — needed to read auth.users.email, which RLS never exposes.
+  // Catch missing-service-role early so the page fails loudly instead of
+  // silently rendering every row with "—" for email.
+  let users: UserRow[] = [];
+  let adminError: string | null = null;
+
+  try {
+    const admin = createAdminClient();
+    const { data: list } = await admin.auth.admin.listUsers({ perPage: 1000 });
+    const emailById = new Map<string, string | null>(
+      (list?.users ?? []).map((u) => [u.id, u.email ?? null])
+    );
+
+    users = (profiles ?? []).map((p) => ({
+      ...p,
+      email: emailById.get(p.id) ?? null,
+    }));
+  } catch (err) {
+    adminError = err instanceof Error ? err.message : "Admin client unavailable.";
+  }
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -70,111 +104,36 @@ export default async function UsersPage() {
           Users
         </h1>
         <p className="text-sm text-[#153E35] mt-1 font-sans">
-          {profiles?.length ?? 0} registered admin accounts
+          {users.length} admin {users.length === 1 ? "account" : "accounts"}
         </p>
       </div>
 
-      {/* ── Info Banner ──────────────────────────────────────────── */}
-      <div className="bg-luxury-gold/8 border border-luxury-gold/20 p-4">
-        <p className="text-xs text-[#153E35] font-sans">
-          User accounts are created by inviting users via Supabase Auth.
-          Role and hotel assignments can be updated directly in the Supabase
-          dashboard → Table Editor → profiles.
-        </p>
-      </div>
+      {/* ── Setup warning ───────────────────────────────────────── */}
+      {/* Shown when SUPABASE_SERVICE_ROLE_KEY isn't configured — without it
+          we can't invite, delete, or read emails. */}
+      {adminError && (
+        <div className="bg-destructive/10 border border-destructive/20 p-4">
+          <p className="text-xs uppercase tracking-wider text-destructive font-sans">
+            Setup required
+          </p>
+          <p className="text-sm text-[#153E35] mt-1">
+            {adminError}
+          </p>
+          <p className="text-xs text-[#153E35]/80 mt-2 font-sans">
+            Add the key to <code className="bg-background px-1">.env.local</code> and
+            restart the dev server.
+          </p>
+        </div>
+      )}
 
-      {/* ── Users Table ───────────────────────────────────────────── */}
-      <div className="bg-card border border-border/50">
-        {!profiles?.length ? (
-          <div className="p-10 text-center">
-            <Users className="h-8 w-8 text-[#153E35] mx-auto mb-3" />
-            <p className="text-sm text-[#153E35]">No user profiles found.</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border/30">
-                  <th className="text-left p-4 text-xs uppercase tracking-wider text-[#153E35] font-normal font-sans">
-                    Name
-                  </th>
-                  <th className="text-left p-4 text-xs uppercase tracking-wider text-[#153E35] font-normal font-sans hidden sm:table-cell">
-                    Role
-                  </th>
-                  <th className="text-left p-4 text-xs uppercase tracking-wider text-[#153E35] font-normal font-sans hidden md:table-cell">
-                    Hotel
-                  </th>
-                  <th className="text-left p-4 text-xs uppercase tracking-wider text-[#153E35] font-normal font-sans hidden lg:table-cell">
-                    Last Updated
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {profiles.map((p, i) => (
-                  <tr
-                    key={p.id}
-                    className={`
-                      ${i < profiles.length - 1 ? "border-b border-border/20" : ""}
-                      ${p.id === user.id ? "bg-luxury-gold/5" : "hover:bg-background/40"}
-                      transition-colors
-                    `}
-                  >
-                    {/* Name / ID */}
-                    <td className="p-4">
-                      <p className="font-medium text-[#153E35]">
-                        {p.full_name ?? "—"}
-                        {p.id === user.id && (
-                          <span className="ml-2 text-xs text-luxury-gold font-sans font-normal">
-                            (you)
-                          </span>
-                        )}
-                      </p>
-                      {/* Show role on mobile below name */}
-                      <p className="text-xs text-[#153E35] mt-0.5 font-sans sm:hidden">
-                        {p.role === "master_admin" ? "Master Admin" : "Property Admin"}
-                      </p>
-                    </td>
-
-                    {/* Role badge */}
-                    <td className="p-4 hidden sm:table-cell">
-                      <span
-                        className={`
-                          inline-block px-2 py-0.5 text-xs font-sans uppercase tracking-wide
-                          ${p.role === "master_admin"
-                            ? "bg-[#173F35]/10 text-[#173F35]"
-                            : "bg-luxury-gold/10 text-luxury-brown"
-                          }
-                        `}
-                      >
-                        {p.role === "master_admin" ? "Master" : "Property"}
-                      </span>
-                    </td>
-
-                    {/* Hotel */}
-                    <td className="p-4 text-[#153E35] hidden md:table-cell">
-                      {p.hotels?.name ?? (
-                        p.role === "master_admin" ? "All Hotels" : "—"
-                      )}
-                    </td>
-
-                    {/* Last updated */}
-                    <td className="p-4 text-[#153E35] text-xs hidden lg:table-cell font-sans">
-                      {format(new Date(p.updated_at), "dd MMM yyyy")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* Count footer */}
-        {profiles && profiles.length > 0 && (
-          <div className="px-4 py-3 border-t border-border/20 text-xs text-[#153E35] font-sans">
-            {profiles.length} users
-          </div>
-        )}
-      </div>
+      {/* ── Manager ────────────────────────────────────────────── */}
+      {!adminError && (
+        <UsersManager
+          users={users}
+          hotels={hotels ?? []}
+          currentUserId={user.id}
+        />
+      )}
     </div>
   );
 }

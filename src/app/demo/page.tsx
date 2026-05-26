@@ -17,6 +17,14 @@ export const metadata: Metadata = {
   description: "Experience the Banyan Tree Experience Calendar demo with sample activities.",
 };
 
+// The demo uses only mock data, so it does NOT need to run a serverless
+// function on every request. Rendering it `force-dynamic` meant each visit hit
+// a cold-startable lambda, which could exceed Vercel's gateway timeout and
+// return a 504 on the first hit. Instead we statically generate it and
+// revalidate hourly (ISR): pages are served instantly from the CDN, while the
+// mock activities' "this week" anchor still refreshes every hour.
+export const revalidate = 3600;
+
 /**
  * Generate mock data for demo purposes
  */

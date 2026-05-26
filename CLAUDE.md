@@ -50,3 +50,4 @@ This project is designed for a non-developer UX/UI designer. Code must be clean 
 - Validate all Zod schemas against the Supabase DB schema.
 - Before writing extensive code, review `claude_instructions/project_brief.md` for the exact implementation sequence.
 - **NEVER ask the user to run commands you can run yourself.** Always use the Bash tool to execute terminal commands (dev server restarts, installs, builds, etc.) directly.
+- **Do the maximum amount of work yourself.** The user wants to do the absolute minimum. Use every tool available — Bash, Supabase MCP (restore/pause projects, run SQL, apply migrations, deploy edge functions, etc.), browser automation, file edits — to complete the task end-to-end. Only ask the user to do something when it is *genuinely impossible* for you to do it (e.g., a password reset that requires their inbox, or a payment action). Never punt a task back to the user out of caution or convenience.

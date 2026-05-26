@@ -170,6 +170,10 @@ export function MonthView({
           border-separate semantics replicated with
           CSS gap-[4px] + individual cell borders.
           ======================================== */}
+      <div className="relative">
+        {/* Fade gradient — indicates horizontal overflow on small screens
+            (mirrors the Weekly view). Hidden on md+ where the grid fits. */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 z-10 bg-gradient-to-l from-background to-transparent md:hidden" />
       <div className="overflow-x-auto">
         <div className="min-w-[560px]">
 
@@ -272,6 +276,7 @@ export function MonthView({
             </div>
           ))}
         </div>
+      </div>
       </div>
 
       {/* ========================================

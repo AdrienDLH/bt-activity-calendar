@@ -55,12 +55,11 @@ export function LoginForm({ routeError }: { routeError: string | null }) {
 
         {/* ── BRAND HEADER ─────────────────────────────────────────── */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-1 bg-luxury-gold mx-auto mb-6" />
           <h1 className="font-reforma-negra text-2xl uppercase tracking-[0.15em] text-[#153E35]">
-            Banyan Tree
+            Banyan Tree Hotels
           </h1>
           <p className="text-sm text-[#153E35] font-sans tracking-wide">
-            Activity Calendar — Admin Portal
+            Experience Calendar — Admin Portal
           </p>
         </div>
 
@@ -208,7 +207,7 @@ export function LoginForm({ routeError }: { routeError: string | null }) {
 
         {/* ── FOOTER ───────────────────────────────────────────────── */}
         <p className="text-center text-xs text-[#153E35]">
-          Banyan Tree Group · Activity Management System
+          Banyan Group · Experience Management System
         </p>
       </div>
     </main>

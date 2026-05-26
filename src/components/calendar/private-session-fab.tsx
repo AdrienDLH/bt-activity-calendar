@@ -46,8 +46,9 @@ export function PrivateSessionFab({ onClick }: PrivateSessionFabProps) {
       className={cn(
         // Fixed positioning (bottom-right, above safe area)
         "fixed bottom-20 right-4 z-40 md:hidden",
-        // Circular button
-        "w-14 h-14 rounded-none",
+        // Circular button (explicit design exception to the square aesthetic:
+        // the FAB reads as a distinct floating control, not a surface)
+        "w-14 h-14 rounded-full",
         // Gold background with shadow
         "bg-luxury-gold text-white shadow-lg",
         // Flex for icon centering
