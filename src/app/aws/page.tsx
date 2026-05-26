@@ -37,10 +37,12 @@ const TILES: Tile[] = [
   { label: "Photo Live-Stream", Icon: IconCamera, href: EVENT.liveStreamUrl, external: true },
 ];
 
-// Card styling mirrors the design system's `luxury-card`: white surface,
-// hairline border, soft shadow that lifts on hover. Square corners only.
+// Card styling mirrors the Interactive Calendar ActivityCard EXACTLY:
+// white `bg-card`, `rounded-[2px]`, NO shadow — depth comes from a 4px hover
+// lift (matches ActivityCard's framer `whileHover={{ y: -4 }}` and
+// `whileTap={{ scale: 0.98 }}`).
 const CARD_CLASS =
-  "group flex aspect-square flex-col items-center justify-center gap-3 rounded-none border border-border/50 bg-card p-4 no-underline shadow-sm transition-shadow duration-300 hover:shadow-md focus-visible:shadow-md";
+  "group flex aspect-square flex-col items-center justify-center gap-3 rounded-[2px] bg-card p-4 no-underline cursor-pointer transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]";
 
 export default function EventLandingPage() {
   return (
@@ -61,9 +63,11 @@ export default function EventLandingPage() {
           const inner = (
             <>
               <Icon className="h-9 w-9 text-luxury-gold sm:h-10 sm:w-10" stroke={1.5} aria-hidden />
-              <span className="text-center font-reforma-gris text-base leading-tight tracking-[0.02em] text-[#153E35]">
+              {/* Title mirrors the ActivityCard <h3> ("Sunrise Beach Yoga"):
+                  Reforma Gris, semibold, text-lg, leading-tight. */}
+              <h3 className="text-center font-reforma-gris text-lg font-semibold leading-tight tracking-[0.02em] text-[#153E35]">
                 {label}
-              </span>
+              </h3>
             </>
           );
 

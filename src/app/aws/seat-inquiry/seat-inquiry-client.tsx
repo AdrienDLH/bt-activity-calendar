@@ -14,6 +14,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconSearch } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 import { lookupSeat, type SeatResult } from "@/lib/event-data";
 
 type Status = "idle" | "found" | "not-found";
@@ -34,7 +35,9 @@ export function SeatInquiryClient() {
 
   return (
     <div className="text-center">
-      <h1 className="font-reforma-gris text-2xl tracking-[0.02em] text-[#153E35]">Seat Inquiry</h1>
+      <h3 className="font-reforma-gris text-xl font-semibold tracking-[0.02em] text-[#153E35]">
+        Seat Inquiry
+      </h3>
       <p className="mt-2 text-sm text-[#153E35]/70">
         Enter your name to view your table for each session.
       </p>
@@ -44,6 +47,7 @@ export function SeatInquiryClient() {
         <label htmlFor="seat-name" className="sr-only">
           Your name
         </label>
+        {/* Input border mirrors the calendar's interactive controls (#85754E) */}
         <input
           id="seat-name"
           type="text"
@@ -54,16 +58,13 @@ export function SeatInquiryClient() {
           }}
           placeholder="Enter your name"
           autoComplete="name"
-          className="w-full rounded-none border border-[#153E35]/20 bg-white px-4 py-3 text-base text-[#153E35] placeholder:text-[#153E35]/40 focus:border-luxury-gold focus:outline-none focus:ring-2 focus:ring-luxury-gold/40"
+          className="w-full rounded-[2px] border border-[#85754E]/50 bg-card px-4 py-3 text-base text-[#153E35] placeholder:text-[#153E35]/40 focus:border-[#85754E] focus:outline-none focus:ring-2 focus:ring-[#85754E]/30"
         />
-        <button
-          type="submit"
-          className="flex min-h-touch w-full items-center justify-center gap-2 rounded-none bg-luxury-forest px-4 py-3 font-reforma-negra text-sm uppercase tracking-[0.12em] text-white transition-opacity duration-200 hover:opacity-90 disabled:opacity-50"
-          disabled={!name.trim()}
-        >
-          <IconSearch className="h-4 w-4" stroke={2} aria-hidden />
+        {/* Uses the shared Button (bronze, Reforma Negra) — same as calendar CTAs */}
+        <Button type="submit" className="w-full" disabled={!name.trim()}>
+          <IconSearch aria-hidden />
           Inquire
-        </button>
+        </Button>
       </form>
 
       {/* ---- Result ---- */}
@@ -75,10 +76,10 @@ export function SeatInquiryClient() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="mx-auto mt-8 max-w-sm border border-[#153E35]/10 bg-white/70 p-6 text-left backdrop-blur-sm"
+            className="mx-auto mt-8 max-w-sm rounded-[2px] bg-card p-6 text-left"
           >
-            <p className="mb-4 border-b border-[#153E35]/10 pb-3">
-              <span className="font-reforma-gris text-lg tracking-[0.02em] text-[#153E35]">
+            <p className="mb-4 border-b border-[#85754E]/15 pb-3">
+              <span className="font-reforma-gris text-lg font-semibold tracking-[0.02em] text-[#153E35]">
                 {result.name}
               </span>
             </p>
@@ -86,7 +87,7 @@ export function SeatInquiryClient() {
               {result.rows.map((row) => (
                 <div key={row.label} className="flex items-baseline justify-between gap-4">
                   <dt className="text-sm font-medium text-[#153E35]">{row.label}</dt>
-                  <dd className="font-reforma-gris text-base tracking-[0.02em] text-luxury-gold">
+                  <dd className="font-reforma-gris text-base font-semibold tracking-[0.02em] text-[#85754E]">
                     {row.value}
                   </dd>
                 </div>

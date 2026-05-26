@@ -25,15 +25,18 @@ export default function TimePlacePage() {
         </div>
       </section>
 
-      {/* ---- General Information panel ---- */}
-      <section className="mt-10 border border-[#153E35]/10 bg-white/60 p-6 backdrop-blur-sm sm:mt-12 sm:p-8">
+      {/* ---- General Information panel ----
+          Card surface mirrors the ActivityCard: bg-card, rounded-[2px], no
+          border/shadow. Item titles use Reforma Gris (semibold) like the
+          calendar's section headings. */}
+      <section className="mt-10 rounded-[2px] bg-card p-6 sm:mt-12 sm:p-8">
         <h2 className="text-center font-reforma-negra text-sm uppercase tracking-[0.15em] text-[#153E35]">
           General Information
         </h2>
 
         {/* About — full width */}
-        <div className="mt-6 border-b border-[#153E35]/10 pb-6">
-          <h3 className="font-reforma-gris text-lg tracking-[0.02em] text-[#153E35]">
+        <div className="mt-6 border-b border-[#85754E]/15 pb-6">
+          <h3 className="font-reforma-gris text-lg font-semibold tracking-[0.02em] text-[#153E35]">
             {T.about.title}
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-[#153E35]/80">{T.about.body}</p>
@@ -43,7 +46,7 @@ export default function TimePlacePage() {
         <dl className="mt-6 grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2">
           {T.info.map((item) => (
             <div key={item.title}>
-              <dt className="font-reforma-gris text-base tracking-[0.02em] text-[#153E35]">
+              <dt className="font-reforma-gris text-base font-semibold tracking-[0.02em] text-[#153E35]">
                 {item.title}
               </dt>
               <dd className="mt-1.5 space-y-1 text-sm leading-relaxed text-[#153E35]/80">
