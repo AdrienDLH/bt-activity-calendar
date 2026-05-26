@@ -31,8 +31,8 @@ export const TIME_AND_PLACE = {
   welcomeKicker: "Welcome to",
   welcomeTitle: "Banyan Tree Zhuhai Phoenix Bay",
   intro: [
-    "We are delighted to host you for the 2026 Elevating Banyan Tree AWS from June 7 to June 10.",
-    "Prepare for a cohesive fusion of productive meetings, inspiring events, and meaningful reconnection — all set to elevate your experience against the immersive backdrop of Chinese charm and culture.",
+    "We are delighted to host you for the 2026 Elevating Banyan Tree AWS from 7 to 10 June.",
+    "Prepare for a cohesive fusion of productive meetings, inspiring events, and meaningful reconnection — paced by the light, tide, and quiet of Phoenix Bay.",
     "We look forward to welcoming you to our Sanctuary for the Senses.",
   ],
   about: {
@@ -63,7 +63,7 @@ export const TIME_AND_PLACE = {
     {
       title: "What to pack",
       lines: [
-        "Leisure clothes, comfortable shoes, smart-casual attire for evening events. For the final Gala dinner, a traditional outfit will be provided.",
+        "Leisure clothes, comfortable shoes, smart-casual attire for evening events. For the dinner on the final night on 9 June, a special Chinese season-inspired vest will be provided.",
       ],
     },
     {
@@ -124,7 +124,7 @@ const CULINARY_FESTIVAL: Session = {
   details: [
     "Dress code: a Chinese season inspired vest will be provided. Wear neutral monotone colours such as all white, black or beige",
   ],
-  venue: "BT Bridge Floating Platforms",
+  venue: "Bridge Floating Platforms",
 };
 
 /* --- Arrival Day (June 7) — shared across all roles --- */
@@ -312,7 +312,7 @@ const DAY_TWO_GM: DayAgenda = {
     {
       time: "14:00–15:30",
       title: "Place by Design: Shaping Signature Spaces & Elements",
-      details: ["Our new signature spaces and design elements for Banyan Tree"],
+      details: ["Our new signature spaces and design elements"],
       venue: "Phoenix Ballroom",
     },
     { time: "15:30–16:00", title: COFFEE, venue: "Phoenix Ballroom" },
