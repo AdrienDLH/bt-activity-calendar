@@ -37,8 +37,7 @@ interface Tile {
 }
 
 const TILES: Tile[] = [
-  // Time & Place wash is zoomed in tighter.
-  { label: "Time & Place", Icon: IconCalendarPin, href: "/aws/time-place", bg: "/aws/tile-time-place.jpg", imgClass: "translate-y-[40px] scale-150 group-hover:scale-[1.55]" },
+  { label: "Time & Place", Icon: IconCalendarPin, href: "/aws/time-place", bg: "/aws/tile-time-place-2.jpg" },
   { label: "Agenda", Icon: IconClipboardList, href: "/aws/agenda", bg: "/aws/tile-agenda.jpg" },
   { label: "Seat Inquiry", Icon: IconSofa, href: "/aws/seat-inquiry", bg: "/aws/tile-seat-inquiry.jpg" },
   { label: "Photo Live-Stream", Icon: IconCamera, href: EVENT.liveStreamUrl, bg: "/aws/tile-photo-livestream.jpg", external: true },
