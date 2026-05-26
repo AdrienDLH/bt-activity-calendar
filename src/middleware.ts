@@ -14,6 +14,16 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/types/database";
 
 export async function middleware(request: NextRequest) {
+  // Only the /admin area requires authentication. Public pages (/, /demo,
+  // /aws, /[slug]) must NEVER block on the Supabase auth server — if Supabase
+  // is slow or paused, awaiting getSession() here makes the middleware time
+  // out and EVERY page returns 504 (MIDDLEWARE_INVOCATION_TIMEOUT). Bail out
+  // early for non-admin paths so public pages are always served. (The matcher
+  // below also scopes the middleware to /admin; this is belt-and-braces.)
+  if (!request.nextUrl.pathname.startsWith("/admin")) {
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -90,14 +100,7 @@ export async function middleware(request: NextRequest) {
  * Skips static files, images, and Next.js internals for performance.
  */
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths EXCEPT:
-     * - _next/static (static files)
-     * - _next/image (image optimisation)
-     * - favicon.ico, sitemap.xml, robots.txt
-     * - Public assets (images, fonts, etc.)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  // Run ONLY on /admin routes. Public pages must not invoke the middleware at
+  // all, so they can never be blocked by a slow/paused Supabase auth server.
+  matcher: ["/admin/:path*"],
 };
