@@ -38,7 +38,7 @@ interface Tile {
 
 const TILES: Tile[] = [
   // Time & Place wash is zoomed in tighter.
-  { label: "Time & Place", Icon: IconCalendarPin, href: "/aws/time-place", bg: "/aws/tile-time-place.jpg", imgClass: "scale-150 group-hover:scale-[1.55]" },
+  { label: "Time & Place", Icon: IconCalendarPin, href: "/aws/time-place", bg: "/aws/tile-time-place.jpg", imgClass: "translate-y-[40px] scale-150 group-hover:scale-[1.55]" },
   { label: "Agenda", Icon: IconClipboardList, href: "/aws/agenda", bg: "/aws/tile-agenda.jpg" },
   { label: "Seat Inquiry", Icon: IconSofa, href: "/aws/seat-inquiry", bg: "/aws/tile-seat-inquiry.jpg" },
   { label: "Photo Live-Stream", Icon: IconCamera, href: EVENT.liveStreamUrl, bg: "/aws/tile-photo-livestream.jpg", external: true },
@@ -48,7 +48,7 @@ const TILES: Tile[] = [
 // the fill image to the radius; relative/isolate stack the image, overlay, then
 // content.
 const CARD_CLASS =
-  "group relative isolate flex aspect-square flex-col items-center justify-center gap-3 overflow-hidden rounded-[2px] p-4 no-underline cursor-pointer transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]";
+  "group relative isolate flex aspect-square flex-col items-center justify-center gap-3 overflow-hidden rounded-[2px] p-4 no-underline hover:no-underline cursor-pointer transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]";
 
 export default function EventLandingPage() {
   return (
