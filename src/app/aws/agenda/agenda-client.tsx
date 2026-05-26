@@ -91,19 +91,20 @@ export function AgendaClient() {
 function TimelineRow({ session, last }: { session: Session; last: boolean }) {
   return (
     <li className="grid grid-cols-[4.5rem_1.25rem_1fr] sm:grid-cols-[5.5rem_1.5rem_1fr]">
-      {/* Time */}
-      <div className="pt-0.5 text-right">
+      {/* Time — nudged up so its centre lines up with the dot + title */}
+      <div className="-mt-[2px] text-right">
         <span className="font-sans text-xs leading-tight text-[#153E35]/70 sm:text-sm">
           {session.time}
         </span>
       </div>
 
-      {/* Connector: dot + vertical line */}
+      {/* Connector: dot + vertical line. The dot is nudged down (mt) so its
+          centre lines up with the first line of the time + title text. */}
       <div className="relative flex justify-center" aria-hidden>
         {!last && (
-          <span className="absolute left-1/2 top-2 h-full w-px -translate-x-1/2 bg-[#85754E]/25" />
+          <span className="absolute left-1/2 top-[9px] h-full w-px -translate-x-1/2 bg-[#85754E]/25" />
         )}
-        <span className="relative z-10 mt-1 h-2 w-2 rounded-full bg-[#85754E] ring-4 ring-luxury-cream" />
+        <span className="relative z-10 mt-[7px] h-2 w-2 rounded-full bg-[#85754E] ring-4 ring-luxury-cream" />
       </div>
 
       {/* Content */}
