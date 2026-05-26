@@ -37,6 +37,22 @@ const nextConfig = {
       },
     ],
   },
+
+  /**
+   * The aws2026.banyantree.com subdomain is dedicated to the AWS 2026 microsite.
+   * Visiting its root sends the user straight to the microsite (/aws). Scoped by
+   * host, so it has no effect on the main bt-activity-calendar.vercel.app domain.
+   */
+  async redirects() {
+    return [
+      {
+        source: "/",
+        has: [{ type: "host", value: "aws2026.banyantree.com" }],
+        destination: "/aws",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
