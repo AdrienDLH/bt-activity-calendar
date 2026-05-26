@@ -56,3 +56,6 @@ public/workbox-*.js
 # Claude & MCP config (project-specific, not for version control)
 .claude/
 .mcp.json
+
+# Uncompressed source wash images (compressed versions are in public/aws)
+/Wash*.jpg

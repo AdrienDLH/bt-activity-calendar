@@ -2,9 +2,10 @@
  * EVENT LANDING — /aws
  *
  * The microsite home: date + location, then the four primary destinations as
- * cards that match the Interactive Calendar design system (white `bg-card`,
- * hairline border, soft shadow, square corners, gold icon accent). Icons are
- * pulled from Tabler (tablericons.com) per brief.
+ * cards. Each card is filled with a Banyan Tree watercolor "wash" image
+ * (compressed to <200KB, served/optimised by next/image), with a dark overlay
+ * so the white icon + title stay legible. Square corners + 4px hover lift keep
+ * them consistent with the Interactive Calendar ActivityCard.
  *
  * `fitViewport` keeps everything — including the footer lockup — on a single
  * screen height on any device.
@@ -13,6 +14,7 @@
  * - Photo Live-Stream → external album (Chinese host), opens in a new tab
  */
 import Link from "next/link";
+import Image from "next/image";
 import {
   IconCalendarPin,
   IconClipboardList,
@@ -27,22 +29,23 @@ interface Tile {
   label: string;
   Icon: Icon;
   href: string;
+  /** Background wash image (in /public/aws). */
+  bg: string;
   external?: boolean;
 }
 
 const TILES: Tile[] = [
-  { label: "Time & Place", Icon: IconCalendarPin, href: "/aws/time-place" },
-  { label: "Agenda", Icon: IconClipboardList, href: "/aws/agenda" },
-  { label: "Seat Inquiry", Icon: IconSofa, href: "/aws/seat-inquiry" },
-  { label: "Photo Live-Stream", Icon: IconCamera, href: EVENT.liveStreamUrl, external: true },
+  { label: "Time & Place", Icon: IconCalendarPin, href: "/aws/time-place", bg: "/aws/tile-time-place.jpg" },
+  { label: "Agenda", Icon: IconClipboardList, href: "/aws/agenda", bg: "/aws/tile-agenda.jpg" },
+  { label: "Seat Inquiry", Icon: IconSofa, href: "/aws/seat-inquiry", bg: "/aws/tile-seat-inquiry.jpg" },
+  { label: "Photo Live-Stream", Icon: IconCamera, href: EVENT.liveStreamUrl, bg: "/aws/tile-photo-livestream.jpg", external: true },
 ];
 
-// Card styling mirrors the Interactive Calendar ActivityCard EXACTLY:
-// white `bg-card`, `rounded-[2px]`, NO shadow — depth comes from a 4px hover
-// lift (matches ActivityCard's framer `whileHover={{ y: -4 }}` and
-// `whileTap={{ scale: 0.98 }}`).
+// Square corners + 4px hover lift (mirrors ActivityCard); overflow-hidden clips
+// the fill image to the radius; relative/isolate stack the image, overlay, then
+// content.
 const CARD_CLASS =
-  "group flex aspect-square flex-col items-center justify-center gap-3 rounded-[2px] bg-card p-4 no-underline cursor-pointer transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]";
+  "group relative isolate flex aspect-square flex-col items-center justify-center gap-3 overflow-hidden rounded-[2px] p-4 no-underline cursor-pointer transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]";
 
 export default function EventLandingPage() {
   return (
@@ -59,13 +62,25 @@ export default function EventLandingPage() {
 
       {/* 2×2 tile grid */}
       <nav className="mt-8 grid grid-cols-2 gap-4">
-        {TILES.map(({ label, Icon, href, external }) => {
+        {TILES.map(({ label, Icon, href, bg, external }) => {
           const inner = (
             <>
-              <Icon className="h-9 w-9 text-luxury-gold sm:h-10 sm:w-10" stroke={1.5} aria-hidden />
+              {/* Watercolor fill */}
+              <Image
+                src={bg}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 640px) 45vw, 200px"
+                className="-z-10 object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              {/* Dark wash for legibility — darker toward the title at the bottom */}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/60 via-black/40 to-black/35" />
+
+              <Icon className="h-9 w-9 text-white sm:h-10 sm:w-10" stroke={1.5} aria-hidden />
               {/* Title mirrors the ActivityCard <h3> ("Sunrise Beach Yoga"):
-                  Reforma Gris, semibold, text-lg, leading-tight. */}
-              <h3 className="text-center font-reforma-gris text-lg font-semibold leading-tight tracking-[0.02em] text-[#153E35]">
+                  Reforma Gris, semibold, text-lg, leading-tight — in white. */}
+              <h3 className="text-center font-reforma-gris text-lg font-semibold leading-tight tracking-[0.02em] text-white">
                 {label}
               </h3>
             </>
