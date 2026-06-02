@@ -323,6 +323,8 @@ const DAY_TWO_GM: DayAgenda = {
       time: "11:15–12:30",
       title: "Experience by Design: Shaping Signature Guest Moments",
       details: ["Design meaningful guest moments that build emotional connection"],
+      description:
+        "A guest forgets the room but remembers how a moment made them feel. We'll hear from GMs on the signature moments lived on their own properties — across very different scales. Come prepared to name one moment worth borrowing, and one that is unmistakably yours.",
       venue: "Phoenix Ballroom",
     },
     {
@@ -335,6 +337,8 @@ const DAY_TWO_GM: DayAgenda = {
       time: "14:00–15:30",
       title: "Place by Design: Shaping Signature Spaces & Elements",
       details: ["Our new signature spaces and design elements for Banyan Tree"],
+      description:
+        "A signature space earns its name only if a guest feels the difference on stepping in. We'll play back the BT 2.0 design principles, then work in groups to sharpen our key signature spaces. Come prepared with examples from your property's signature spaces.",
       venue: "Phoenix Ballroom",
     },
     { time: "15:30–16:00", title: COFFEE, venue: "Phoenix Ballroom" },
