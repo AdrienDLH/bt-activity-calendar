@@ -435,8 +435,8 @@ const DAY_TWO_RM: DayAgenda = {
     },
     {
       time: "12:40–13:00",
-      title: "Bento Lunch & Gallery Showcase",
-      details: ["Reenergising Activity"],
+      title: "New Budget 2027 Template",
+      details: ["Process and Presentation Expectations"],
       venue: "Zi Gui + Gu Xian",
     },
     { time: "13:00–14:00", title: "Bento Lunch & Gallery", venue: "Phoenix Ballroom" },
