@@ -89,6 +89,12 @@ export interface Session {
   time: string;
   title: string;
   details?: string[];
+  /**
+   * Optional "Thought Starter" — a short reflective prompt shown under the
+   * session (Column D of the source agenda). Rendered as a bronze-accented
+   * callout in the agenda timeline.
+   */
+  description?: string;
   dressCode?: string;
   venue: string;
 }
@@ -172,6 +178,8 @@ const DAY_ONE: DayAgenda = {
       time: "9:15–10:45",
       title: "Signals from the Field: What's Working, What's Not",
       details: ["Playback on survey, listening circles and shareback"],
+      description:
+        "A commitment to two-way accountability between the field and the corporate / regional support layers. Forward-facing session to identify what we need to start, stop and continue across our global functions.",
       venue: "Phoenix Ballroom",
     },
     { time: "10:45–11:00", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -181,6 +189,8 @@ const DAY_ONE: DayAgenda = {
       details: [
         "Playback of 360 survey and workshop on elevating our strategic agility and use of data intelligence",
       ],
+      description:
+        "As leaders, it is challenging to make sense and take better decisions in a world which is more and more Volatile, Uncertain, Complex and Ambiguous. How you use data as a leverage is part of the answer: are you and your team data-driven yet?",
       venue: "Phoenix Ballroom",
     },
     {
@@ -195,6 +205,8 @@ const DAY_ONE: DayAgenda = {
       details: [
         "Playback of 360 survey and workshop on linking team culture and the guest experience",
       ],
+      description:
+        "Top leaders bring together People & Culture and Guest Impact into a single symbiotic capability. Not two skills. One capability, expressed in two domains. How will we co-shape the way we lead The Banyan Tree Way? 3 case studies to be shared with participants to pre-read before the discussion during the session.",
       venue: "Phoenix Ballroom",
     },
     { time: "15:00–15:15", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -202,6 +214,8 @@ const DAY_ONE: DayAgenda = {
       time: "15:15–17:15",
       title: "Visions from the Field: The Future of Banyan Tree",
       details: ["GM & DOSM team presentations, and sharing from all"],
+      description:
+        "In 2030, what will Banyan Tree mean to a guest that no other brand can offer? What does your property need to become to deliver that? Come prepared to co-create the future of our brand together.",
       venue: "Phoenix Ballroom",
     },
     { time: "17:15–17:30", title: "Group Photo Session", venue: "Phoenix Ballroom" },
@@ -235,6 +249,8 @@ const DAY_THREE: DayAgenda = {
       time: "9:00–9:45",
       title: "Founders Fireside",
       details: ["Panel + Q&A"],
+      description:
+        "An intimate session with our Founders. What would you like to learn about Banyan Group?",
       venue: "Phoenix Ballroom",
     },
     { time: "9:45–10:45", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -244,6 +260,8 @@ const DAY_THREE: DayAgenda = {
       details: [
         "Individual and group work to solidify insights, lock in commitments and unlock resources",
       ],
+      description:
+        "Following 2.5 days of engagement, learning, collaboration and alignment — this is the moment to move from insight to intention, and from intention to action. The brand does not transform in meetings. It transforms through the daily choices of us as its leaders.",
       venue: "Phoenix Ballroom",
     },
     {
@@ -282,12 +300,16 @@ const DAY_TWO_MORNING: Session[] = [
     time: "9:00–10:30",
     title: "Desire by Design: Shaping Marketing Experiences for the Banyan Tree Guests",
     details: ["Define your ideal guests and shape an experience-led pricing strategy"],
+    description:
+      "The guest standing at your door today is not the same person who stood there five years ago. What has changed about what they need, what they expect, and what they are willing to pay for? And what does your property need to change, preserve, or reimagine to stay relevant to them for the next decade?",
     venue: "Phoenix Ballroom",
   },
   {
     time: "10:30–11:00",
     title: "Keynote: Navigating the New Era of Luxury Travel in Greater China",
     details: ["Speaker Ms. Irene Lee, GM Virtuoso China"],
+    description:
+      "Learn about the landscape of luxury travel in Greater China and take this opportunity to ask questions of one of our most important partners.",
     venue: "Phoenix Ballroom",
   },
   { time: "11:00–11:15", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -320,6 +342,8 @@ const DAY_TWO_GM: DayAgenda = {
       time: "16:00–17:30",
       title: "Hotel of the Future",
       details: ["Operating for Profit, People and the Planet in the age of AI"],
+      description:
+        "Is operating a hotel different today than 30 years ago? And what about in 10 years? Taking a step back, what are the shifts you perceive, what should be preserved and what should evolve for the next chapter of Banyan Tree?",
       venue: "Phoenix Ballroom",
     },
     CULINARY_FESTIVAL,
@@ -336,18 +360,24 @@ const DAY_TWO_DOSM: DayAgenda = {
       details: [
         "The Value Proposition of the Chinese Market Empowered by Social Marketing, Distribution Channel and Luxury Business",
       ],
+      description:
+        "China is our largest feeder market. How do we engage the Chinese guest in their own preferred channels and on social media? Luxury Travel Advisors are fast growing in China — whom do they want to do business with?",
       venue: "Zi Gui + Gu Xian",
     },
     {
       time: "12:00–12:40",
       title: "Commercial Strategies in a Tumultous World",
       details: ["Rethinking a refreshed playbook"],
+      description:
+        "2026 has brought new macro-economic challenges and being able to find new sources of business is important. What is something new you tried recently that worked or didn't work?",
       venue: "Zi Gui + Gu Xian",
     },
     {
       time: "12:40–13:00",
       title: "New Budget 2027 Template",
       details: ["Process and Presentation Expectations"],
+      description:
+        "A new Commercial Strategy Template for Budget 2027 that guides our thinking. Are you ready to start planning for 2027?",
       venue: "Zi Gui + Gu Xian",
     },
     {
@@ -356,11 +386,19 @@ const DAY_TWO_DOSM: DayAgenda = {
       details: ["Reenergising Activity"],
       venue: "Ballroom Foyer / Garden / Lobby Lounge",
     },
-    { time: "14:00–15:00", title: "Redefining Luxury Sales", venue: "Zi Gui" },
+    {
+      time: "14:00–15:00",
+      title: "Redefining Luxury Sales",
+      description:
+        "Luxury travel is a $168 Trillion market in 2026. The question is not whether there's opportunity — it's whether you move before your competitor does.",
+      venue: "Zi Gui",
+    },
     {
       time: "15:00–15:30",
       title: "Story by Design",
       details: ["Design rare experiences and learn how to activate them across your marketing ecosystem"],
+      description:
+        "The way a guest discovers, chooses, books, and advocates for a hotel has been completely rewritten in the last five years. Looking at your own property, what is working in how you reach and convert the right guest, what is broken, and what does a truly connected brand story look like across every channel and every team in the next chapter of Banyan Tree?",
       venue: "Zi Gui",
     },
     { time: "15:30–16:00", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -385,6 +423,8 @@ const DAY_TWO_RM: DayAgenda = {
       details: [
         "Value Proposition of the Chinese Market Empowered by Social Marketing, Distribution Channel and Luxury Business",
       ],
+      description:
+        "China is our largest feeder market. How do we engage the Chinese guest in their own preferred channels and on social media? Luxury Travel Advisors are fast growing in China — whom do they want to do business with?",
       venue: "Zi Gui + Gu Xian",
     },
     {
@@ -404,12 +444,16 @@ const DAY_TWO_RM: DayAgenda = {
       time: "14:00–15:00",
       title: "Maximising Distribution",
       details: ["Future Roadmap and Maximizing Opportunities"],
+      description:
+        "Our global distribution landscape presents new opportunities — do you know all the channels available for you to maximize?",
       venue: "Qiong Zhi",
     },
     {
       time: "15:00–15:30",
       title: "Maximising CoStar Platform",
       details: ["Tools & tricks on understanding your market & comp set"],
+      description:
+        "CoStar is a tool we all use to monitor our competitors — how do we use it to understand market, competitors and find new opportunities?",
       venue: "Qiong Zhi",
     },
     { time: "15:30–16:00", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -417,6 +461,8 @@ const DAY_TWO_RM: DayAgenda = {
       time: "16:00–16:30",
       title: "Leveraging with Banyan",
       details: ["How to capitalise on members to drive total revenue"],
+      description:
+        "Our best guests have already stayed with us. With a new platform launched in 2025/2026, how are we ensuring we work with our teams to drive total revenue?",
       venue: "Qiong Zhi",
     },
     {
@@ -425,6 +471,8 @@ const DAY_TWO_RM: DayAgenda = {
       details: [
         "Group Workshop - Develop Buyout Pricing, Corporate Retreat Pricing, Wellbeing Practicioner Toolkits",
       ],
+      description:
+        "3 case studies to help us think through all the considerations required to design an effective pricing toolkit for different scenarios.",
       venue: "Qiong Zhi",
     },
     {
@@ -475,3 +523,230 @@ const MOCK_SEATS: Record<string, SeatResult> = {
 export function lookupSeat(name: string): SeatResult | null {
   return MOCK_SEATS[name.trim().toLowerCase()] ?? null;
 }
+
+/* ------------------------------------------------------------------ */
+/* WECHAT SETUP & VERIFICATION GUIDE                                   */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Step-by-step guide for setting up WeChat in China and recovering from the
+ * common "Security Verification Failed" error. Rendered at /aws/wechat and
+ * linked from the Time & Place page.
+ *
+ * FOR THE EDITOR:
+ * - Each `step` becomes its own numbered card.
+ * - A step can carry an optional `intro` line and one or more `groups`.
+ * - Each `group` is a bullet list with an optional `subtitle` + `intro`.
+ * - A step can end with an optional `cta` (external link button).
+ */
+export interface GuideGroup {
+  /** Optional sub-heading within a step (e.g. "Phone Number & SMS Verification"). */
+  subtitle?: string;
+  /** Optional lead-in sentence shown above the bullet points. */
+  intro?: string;
+  points: string[];
+}
+
+export interface GuideStep {
+  title: string;
+  /** Optional lead-in sentence shown under the step title. */
+  intro?: string;
+  groups: GuideGroup[];
+  /** Optional external-link button at the end of the step. */
+  cta?: { label: string; href: string };
+}
+
+export interface WechatGuide {
+  kicker: string;
+  title: string;
+  intro: string;
+  /** Official app-store download links (used by the WeChatDownload buttons). */
+  downloads: { ios: string; android: string };
+  steps: GuideStep[];
+  proTip: string;
+}
+
+export const WECHAT_GUIDE: WechatGuide = {
+  kicker: "Staying Connected",
+  title: "WeChat Setup & Verification",
+  intro:
+    "WeChat is the primary way to stay connected in China. If you run into a “Security Verification Failed / Incorrect information. Enter again.” message while setting up, follow this step-by-step guide to resolve it.",
+  /** Official app-store download links (used by the WeChatDownload buttons). */
+  downloads: {
+    ios: "https://apps.apple.com/app/wechat/id414478124",
+    android: "https://play.google.com/store/apps/details?id=com.tencent.mm",
+  },
+  steps: [
+    {
+      title: "Stop Re-trying Immediately",
+      groups: [
+        {
+          points: [
+            "Tap “Later” to exit the verification screen.",
+            "Do NOT tap “Try again” repeatedly for the next 24 hours. Multiple failed attempts trigger stricter security controls and may temporarily lock your account.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Check the Most Common Mistakes",
+      intro: "These are the highest-priority things to get right.",
+      groups: [
+        {
+          subtitle: "Phone Number & SMS Verification",
+          points: [
+            "Select the correct country/region code from the list (e.g. +1 for the US, +44 for the UK).",
+            "Do NOT re-enter the country code in the phone number field — enter only the pure local digits.",
+            "Confirm your phone line is active, not roaming-restricted, and can receive international SMS.",
+          ],
+        },
+        {
+          subtitle: "ID / Identity Verification (if applicable)",
+          intro: "If you are verifying with a passport or government ID:",
+          points: [
+            "Make sure the photo is clear, unobstructed, and free of glare.",
+            "Double-check that your full name, ID number, and expiration date exactly match the information linked to your WeChat account.",
+            "Ensure your ID document is still valid (not expired).",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Fix Your Environment",
+      intro: "A clean network and an up-to-date app help you avoid automatic security blocks.",
+      groups: [
+        {
+          subtitle: "Restart your phone & update WeChat",
+          points: [
+            "Reboot your device.",
+            "Open your app store and update WeChat to the latest version — outdated versions often cause verification issues.",
+          ],
+        },
+        {
+          subtitle: "Use a stable, private network",
+          points: [
+            "Avoid public Wi-Fi, VPNs, or proxy connections during verification.",
+            "Switch to a strong home Wi-Fi or a reliable mobile data connection.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Troubleshoot by Scenario",
+      groups: [
+        {
+          subtitle: "Scenario A — Registering a new WeChat account",
+          intro:
+            "For non-Chinese users, new registrations almost always require Friend Verification: an existing WeChat user scans your QR code to confirm your registration. The helper must:",
+          points: [
+            "Have a WeChat account in good standing for at least 6 months.",
+            "Have verified their account with a Chinese mainland phone number.",
+            "Not have helped others register too recently.",
+          ],
+        },
+        {
+          subtitle: "Scenario B — Logging into an existing account",
+          points: [
+            "If you know your password, try “Password Login” to skip the verification step temporarily.",
+            "Once logged in, go to Me → Settings → Account & Security to double-check your linked phone number and identity information.",
+            "If you are logging in on a new device, you may need Friend Confirmation — ask a contact in your WeChat list to help verify your login.",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Contact WeChat Support",
+      intro: "If the problem persists, submit a request to official support.",
+      groups: [
+        {
+          points: [
+            "On the error screen, tap “Submit Feedback” to send a report directly.",
+            "Or visit the official WeChat Help Center and go to Account & Security → Login & Verification to submit your account details and a screenshot of the error.",
+            "The support team usually responds within 1–3 business days.",
+          ],
+        },
+      ],
+      cta: { label: "Visit WeChat Help Center", href: "https://help.wechat.com" },
+    },
+  ],
+  proTip:
+    "After resolving the issue, complete WeChat’s official identity verification (with your passport or a supported bank card) to avoid future verification blocks.",
+};
+
+/* ------------------------------------------------------------------ */
+/* RESORT MAP                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Resort map shown on the Time & Place page. The centre illustration is the
+ * cropped artwork (the original's coloured side panels are dropped); the two
+ * numbered legends below are recreated here as responsive, bilingual lists so
+ * they stay legible on every screen size.
+ *
+ * FOR THE EDITOR:
+ * - `art` is the displayed image; `artLarge` opens in the tap-to-zoom overlay.
+ * - Each legend `items` entry is { zh, en } and is numbered automatically by
+ *   its position (1, 2, 3 …), matching the markers drawn on the map artwork.
+ */
+export interface MapLegendItem {
+  zh: string;
+  en: string;
+}
+
+export interface MapLegend {
+  brand: string;
+  brandZh: string;
+  items: MapLegendItem[];
+}
+
+export const RESORT_MAP = {
+  art: "/aws/resort-map-art.jpg",
+  artLarge: "/aws/resort-map-art-large.jpg",
+  legends: [
+    {
+      brand: "Banyan Tree",
+      brandZh: "悦榕庄",
+      items: [
+        { zh: "大堂入口", en: "Lobby Entrance" },
+        { zh: "镜·酒廊", en: "Mirror Lobby Lounge" },
+        { zh: "庆典草坪", en: "Rooftop Lawn" },
+        { zh: "悦榕阁", en: "Banyan Tree Gallery" },
+        { zh: "凤凰厅", en: "Phoenix Ballroom" },
+        { zh: "糖颂·饼店", en: "The Butter" },
+        { zh: "鲜·闽菜餐厅", en: "Xun Restaurant" },
+        { zh: "榕·点心餐厅", en: "Rong Restaurant" },
+        { zh: "悦榕Spa", en: "Banyan Tree Spa" },
+        { zh: "拱桥", en: "Arch Bridge" },
+        { zh: "五栋客房", en: "Building 5 Guest Rooms" },
+        { zh: "健身房", en: "Gym" },
+        { zh: "三栋客房", en: "Building 3 Guest Rooms" },
+        { zh: "户外无边泳池", en: "Infinity Pool" },
+        { zh: "有马铁泉", en: "Arima Hot Spring" },
+        { zh: "箱根温泉", en: "Hakone Hot Spring" },
+        { zh: "二栋客房", en: "Building 2 Guest Rooms" },
+        { zh: "一栋客房", en: "Building 1 Guest Rooms" },
+        { zh: "蚌·炭火酒馆", en: "Bang Bar" },
+      ],
+    },
+    {
+      brand: "Angsana",
+      brandZh: "悦椿",
+      items: [
+        { zh: "出入口", en: "Entrance & Exit" },
+        { zh: "白鹭厅", en: "Egret Ballroom" },
+        { zh: "大堂", en: "Lobby" },
+        { zh: "米宴·东南亚餐厅", en: "Rice Bowl" },
+        { zh: "影吧·悬崖酒吧", en: "Shadow Bar" },
+        { zh: "食集·自助餐厅", en: "Market Place" },
+        { zh: "网红水池", en: "Iconic Pool" },
+        { zh: "中庭草坪", en: "Infinity Garden" },
+        { zh: "石崖草坪", en: "Infinity Edge" },
+        { zh: "悬崖沙滩", en: "Cliff Beach" },
+        { zh: "珍珠沙滩", en: "Pearl Beach" },
+        { zh: "户外泳池", en: "Outdoor Swimming Pool" },
+        { zh: "Cavaya池畔吧", en: "Cavaya Poolside Bar" },
+        { zh: "儿童乐园", en: "Kid's Club" },
+      ],
+    },
+  ] satisfies MapLegend[],
+} as const;

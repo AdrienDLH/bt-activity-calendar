@@ -116,6 +116,8 @@ const config: Config = {
         ],
         "reforma-negra": ["var(--font-reforma-negra)", "Georgia", "serif"],
         "reforma-gris": ["var(--font-reforma-gris)", "Georgia", "serif"],
+        // Chinese kai typeface — apply via `font-kai` to 中文 text
+        kai: ["var(--font-kai)", "Kaiti", "STKaiti", "serif"],
       },
 
       /**

@@ -118,6 +118,19 @@ function TimelineRow({ session, last }: { session: Session; last: boolean }) {
             {d}
           </p>
         ))}
+        {/* Thought Starter — reflective prompt (Column D). Set apart with a
+            bronze left-rule + small uppercase label, in the same accent family
+            as the rest of the event design system. */}
+        {session.description && (
+          <div className="mt-3 border-l-2 border-[#85754E]/40 pl-3">
+            <p className="font-sans text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
+              Thought Starter
+            </p>
+            <p className="mt-1.5 text-sm italic leading-relaxed text-[#153E35]/75">
+              {session.description}
+            </p>
+          </div>
+        )}
         {session.dressCode && (
           <p className="mt-1 text-sm text-[#153E35]/75">
             <span className="font-semibold text-[#153E35]">Dress code:</span> {session.dressCode}

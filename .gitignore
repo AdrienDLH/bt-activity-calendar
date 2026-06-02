@@ -59,3 +59,8 @@ public/workbox-*.js
 
 # Uncompressed source wash images (compressed versions are in public/aws)
 /Wash*.jpg
+
+# Internal source data & assets — NOT for version control
+# (spreadsheets contain attendee PII; high-res map is the 12MB crop source)
+*.xlsx
+/high res map.jpeg

@@ -48,6 +48,16 @@ const fontReformaGris = localFont({
   display: "swap",
 });
 
+// Chinese text (FZKai — a brush-kai typeface used for 中文 labels).
+// Subset to only the glyphs used on the site (~26 KB vs the 4.4 MB full TTF).
+// IMPORTANT: if you add NEW Chinese text anywhere, re-run the subset script so
+// the new glyphs are included — see scripts/subset-kai.* / project notes.
+const fontKai = localFont({
+  src: "../fonts/FZKai_Z03T.subset.woff2",
+  variable: "--font-kai",
+  display: "swap",
+});
+
 /**
  * METADATA
  *
@@ -112,7 +122,7 @@ export default function RootLayout({
         - text-[#153E35]: Applies the brown text color
       */}
       <body
-        className={`${fontNiramit.variable} ${fontReformaNegra.variable} ${fontReformaGris.variable} font-sans antialiased bg-background text-[#153E35] min-h-screen`}
+        className={`${fontNiramit.variable} ${fontReformaNegra.variable} ${fontReformaGris.variable} ${fontKai.variable} font-sans antialiased bg-background text-[#153E35] min-h-screen`}
       >
         {/* Main content area */}
         {children}
