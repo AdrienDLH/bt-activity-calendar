@@ -106,6 +106,23 @@ export interface ActivityWithType extends Activity {
 }
 
 /**
+ * AwsSeat - A single attendee's seat assignments for the AWS 2026 event.
+ *
+ * Looked up by normalised email. Lives in a deny-all-RLS table queried only
+ * via the service-role server action — never exposed to the client.
+ */
+export interface AwsSeat {
+  id: string;
+  email: string;
+  name: string;
+  jun_8: string | null;
+  jun_9_morning: string | null;
+  jun_9_afternoon: string | null;
+  jun_10: string | null;
+  created_at: string;
+}
+
+/**
  * Database schema type for Supabase client
  *
  * This provides full type safety for all database operations.
@@ -132,6 +149,11 @@ export interface Database {
         Row: Activity;
         Insert: Omit<Activity, "id" | "created_at">;
         Update: Partial<Omit<Activity, "id" | "created_at">>;
+      };
+      aws_seats: {
+        Row: AwsSeat;
+        Insert: Omit<AwsSeat, "id" | "created_at">;
+        Update: Partial<Omit<AwsSeat, "id" | "created_at">>;
       };
     };
   };

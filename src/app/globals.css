@@ -179,6 +179,26 @@
   }
 
   /**
+   * AUTOFILL STYLING
+   *
+   * Browsers paint autofilled inputs with their own off-brand background
+   * (Chrome's pale blue, Safari's yellow). We can't recolour that background
+   * directly, but the long background-color transition keeps the input's own
+   * CSS background indefinitely, and text-fill-color forces our forest text.
+   * Result: autofilled fields look identical to typed ones, on-brand.
+   */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: #153E35;
+    caret-color: #153E35;
+    transition: background-color 99999s ease-in-out 0s;
+  }
+
+  /**
    * REDUCED MOTION SUPPORT
    *
    * Respects user's system preference for reduced motion.

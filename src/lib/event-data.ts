@@ -495,34 +495,13 @@ export const AGENDA: Record<RoleId, DayAgenda[]> = {
 /* SEAT INQUIRY                                                        */
 /* ------------------------------------------------------------------ */
 
-export interface SeatResult {
-  name: string;
-  rows: { label: string; value: string }[];
-}
-
 /**
- * MOCK seat-assignment lookup.
- *
- * The original "Seat Inquiry" is backed by a database (to be wired up later).
- * For now this returns demo data for the test name "lisa" so the UI flow can be
- * reviewed end-to-end. Replace `lookupSeat` with a real fetch/Supabase query
- * when the backend is ready — the return shape (`SeatResult`) stays the same.
+ * Seat lookup is intentionally NOT here. Attendee seat data is sensitive, so
+ * it must never live in this file (which is imported by Client Components and
+ * therefore shipped to the browser). It lives in the deny-all-RLS `aws_seats`
+ * Supabase table and is read only by the server action in
+ * src/app/aws/seat-inquiry/actions.ts (service-role, server-side).
  */
-const MOCK_SEATS: Record<string, SeatResult> = {
-  lisa: {
-    name: "lisa",
-    rows: [
-      { label: "Jun. 8", value: "No.1 Table" },
-      { label: "Jun. 9 Morning", value: "No.2 Table" },
-      { label: "Jun. 9 Afternoon", value: "No.3 Table" },
-      { label: "Jun. 10", value: "No.5 Table" },
-    ],
-  },
-};
-
-export function lookupSeat(name: string): SeatResult | null {
-  return MOCK_SEATS[name.trim().toLowerCase()] ?? null;
-}
 
 /* ------------------------------------------------------------------ */
 /* WECHAT SETUP & VERIFICATION GUIDE                                   */

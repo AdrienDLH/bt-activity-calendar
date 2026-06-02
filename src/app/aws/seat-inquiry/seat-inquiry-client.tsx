@@ -3,34 +3,35 @@
 /**
  * SEAT INQUIRY CLIENT
  *
- * Name field + "Inquire" button → table assignment card. The result animates in
- * beneath the form; "not found" shows a gentle inline message rather than an
- * error. Try the test name "lisa".
+ * Email field + "Inquire" button → table assignment card. The actual lookup
+ * happens in a server action (./actions) that reads the deny-all-RLS
+ * `aws_seats` table with the service-role key, so no attendee data is ever
+ * shipped to the browser. This component only ever receives the single matched
+ * record (or a status). Try the test email "lisa.liu@groupbanyan.com".
  *
- * Backend note: `lookupSeat` is a synchronous mock today. When the database is
- * ready, make this an async fetch — keep the `SeatResult` shape and the rest of
- * this component stays the same.
+ * Edge cases handled: empty/invalid email, not-found, server error, and the
+ * in-flight loading state.
  */
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconLoader2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-import { lookupSeat, type SeatResult } from "@/lib/event-data";
-
-type Status = "idle" | "found" | "not-found";
+import { lookupSeat, type SeatLookupResult } from "./actions";
 
 export function SeatInquiryClient() {
-  const [name, setName] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [result, setResult] = useState<SeatResult | null>(null);
+  const [email, setEmail] = useState("");
+  const [result, setResult] = useState<SeatLookupResult | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const trimmed = name.trim();
+    const trimmed = email.trim();
     if (!trimmed) return;
-    const found = lookupSeat(trimmed);
-    setResult(found);
-    setStatus(found ? "found" : "not-found");
+    setResult(null); // clear any previous result so nothing stale shows mid-search
+    startTransition(async () => {
+      const res = await lookupSeat(trimmed);
+      setResult(res);
+    });
   }
 
   return (
@@ -39,37 +40,44 @@ export function SeatInquiryClient() {
         Seat Inquiry
       </h3>
       <p className="mt-2 text-sm text-[#153E35]/70">
-        Enter your name to view your table for each session.
+        Enter your email to view your table for each session.
       </p>
 
       {/* ---- Form ---- */}
       <form onSubmit={handleSubmit} className="mx-auto mt-8 max-w-sm space-y-3 text-left">
-        <label htmlFor="seat-name" className="sr-only">
-          Your name
+        <label htmlFor="seat-email" className="sr-only">
+          Your email
         </label>
         {/* Input border mirrors the calendar's interactive controls (#85754E) */}
         <input
-          id="seat-name"
-          type="text"
-          value={name}
+          id="seat-email"
+          type="email"
+          inputMode="email"
+          value={email}
           onChange={(e) => {
-            setName(e.target.value);
-            if (status !== "idle") setStatus("idle");
+            setEmail(e.target.value);
+            if (result) setResult(null);
           }}
-          placeholder="Enter your name"
-          autoComplete="name"
+          placeholder="Enter your email"
+          autoComplete="email"
+          autoCapitalize="none"
+          spellCheck={false}
           className="w-full rounded-[2px] border border-[#85754E]/50 bg-card px-4 py-3 text-base text-[#153E35] placeholder:text-[#153E35]/40 focus:border-[#85754E] focus:outline-none focus:ring-2 focus:ring-[#85754E]/30"
         />
         {/* Uses the shared Button (bronze, Reforma Negra) — same as calendar CTAs */}
-        <Button type="submit" className="w-full" disabled={!name.trim()}>
-          <IconSearch aria-hidden />
-          Inquire
+        <Button type="submit" className="w-full" disabled={!email.trim() || isPending}>
+          {isPending ? (
+            <IconLoader2 className="animate-spin" aria-hidden />
+          ) : (
+            <IconSearch aria-hidden />
+          )}
+          {isPending ? "Searching…" : "Inquire"}
         </Button>
       </form>
 
       {/* ---- Result ---- */}
       <AnimatePresence mode="wait">
-        {status === "found" && result && (
+        {!isPending && result?.status === "found" && (
           <motion.div
             key="found"
             initial={{ opacity: 0, y: 10 }}
@@ -83,30 +91,41 @@ export function SeatInquiryClient() {
                 {result.name}
               </span>
             </p>
-            <dl className="space-y-3">
-              {result.rows.map((row) => (
-                <div key={row.label} className="flex items-baseline justify-between gap-4">
-                  <dt className="text-sm font-medium text-[#153E35]">{row.label}</dt>
-                  <dd className="font-reforma-gris text-base font-semibold tracking-[0.02em] text-[#85754E]">
-                    {row.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            {result.rows.length > 0 ? (
+              <dl className="space-y-3">
+                {result.rows.map((row) => (
+                  <div key={row.label} className="flex items-baseline justify-between gap-4">
+                    <dt className="text-sm font-medium text-[#153E35]">{row.label}</dt>
+                    <dd className="font-reforma-gris text-base font-semibold tracking-[0.02em] text-[#85754E]">
+                      {row.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            ) : (
+              <p className="text-sm text-[#153E35]/70">
+                No table assignments are on record yet. Please check back later or speak with the
+                event team.
+              </p>
+            )}
           </motion.div>
         )}
 
-        {status === "not-found" && (
+        {!isPending && result && result.status !== "found" && (
           <motion.p
-            key="not-found"
+            key={result.status}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="mx-auto mt-6 max-w-sm text-sm text-[#153E35]/70"
           >
-            We couldn&apos;t find a seating record for that name. Please check the spelling or speak
-            with the event team.
+            {result.status === "invalid" &&
+              "Please enter a valid email address (the one you registered with)."}
+            {result.status === "not-found" &&
+              "We couldn’t find a seating record for that email. Please check the spelling or speak with the event team."}
+            {result.status === "error" &&
+              "Something went wrong looking up your seat. Please try again in a moment."}
           </motion.p>
         )}
       </AnimatePresence>
