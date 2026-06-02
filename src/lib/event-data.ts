@@ -130,7 +130,7 @@ const CULINARY_FESTIVAL: Session = {
   details: [
     "Dress code: a Chinese season inspired vest will be provided. Wear neutral monotone colours such as all white, black or beige",
   ],
-  venue: "Bridge Floating Platforms",
+  venue: "BT Bridge Floating Platforms",
 };
 
 /* --- Arrival Day (June 7) — shared across all roles --- */
@@ -142,7 +142,7 @@ const DAY_ARRIVAL: DayAgenda = {
   date: "07 June Sunday",
   sessions: [
     {
-      time: "18:15–20:30",
+      time: "18:00–20:30",
       title: "Welcome Reception",
       details: ["Showcase of Remedy Bar, YueZui, JiaYao and Saffron"],
       dressCode: "Smart casual",
@@ -242,7 +242,7 @@ const DAY_THREE: DayAgenda = {
       time: "6:30–8:30",
       title: "Breakfast 2.0",
       details: ["At own leisure"],
-      venue: "Phoenix Ballroom",
+      venue: "RONG Dim Sum Restaurant",
     },
     { time: "8:30–9:00", title: "Arrival", venue: "Phoenix Ballroom" },
     {
@@ -334,7 +334,7 @@ const DAY_TWO_GM: DayAgenda = {
     {
       time: "14:00–15:30",
       title: "Place by Design: Shaping Signature Spaces & Elements",
-      details: ["Our new signature spaces and design elements"],
+      details: ["Our new signature spaces and design elements for Banyan Tree"],
       venue: "Phoenix Ballroom",
     },
     { time: "15:30–16:00", title: COFFEE, venue: "Phoenix Ballroom" },
@@ -421,7 +421,7 @@ const DAY_TWO_RM: DayAgenda = {
       time: "11:15–12:00",
       title: "Winning in the China Market",
       details: [
-        "Value Proposition of the Chinese Market Empowered by Social Marketing, Distribution Channel and Luxury Business",
+        "The Value Proposition of the Chinese Market Empowered by Social Marketing, Distribution Channel and Luxury Business",
       ],
       description:
         "China is our largest feeder market. How do we engage the Chinese guest in their own preferred channels and on social media? Luxury Travel Advisors are fast growing in China — whom do they want to do business with?",
