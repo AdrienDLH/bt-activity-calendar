@@ -435,12 +435,16 @@ const DAY_TWO_RM: DayAgenda = {
       time: "12:00–12:40",
       title: "Commercial Strategies in a Tumultous World",
       details: ["Rethinking a refreshed playbook"],
+      description:
+        "2026 has brought new macro-economic challenges and being able to find new sources of business is important. What is something new you tried recently that worked or didn't work?",
       venue: "Zi Gui + Gu Xian",
     },
     {
       time: "12:40–13:00",
       title: "New Budget 2027 Template",
       details: ["Process and Presentation Expectations"],
+      description:
+        "A new Commercial Strategy Template for Budget 2027 that guides our thinking. Are you ready to start planning for 2027?",
       venue: "Zi Gui + Gu Xian",
     },
     { time: "13:00–14:00", title: "Bento Lunch & Gallery", venue: "Phoenix Ballroom" },
