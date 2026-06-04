@@ -370,7 +370,7 @@ const DAY_TWO_DOSM: DayAgenda = {
     },
     {
       time: "12:00–12:40",
-      title: "Commercial Strategies in a Tumultous World",
+      title: "Commercial Strategies in a Tumultuous World",
       details: ["Rethinking a refreshed playbook"],
       description:
         "2026 has brought new macro-economic challenges and being able to find new sources of business is important. What is something new you tried recently that worked or didn't work?",
@@ -433,7 +433,7 @@ const DAY_TWO_RM: DayAgenda = {
     },
     {
       time: "12:00–12:40",
-      title: "Commercial Strategies in a Tumultous World",
+      title: "Commercial Strategies in a Tumultuous World",
       details: ["Rethinking a refreshed playbook"],
       description:
         "2026 has brought new macro-economic challenges and being able to find new sources of business is important. What is something new you tried recently that worked or didn't work?",
