@@ -84,26 +84,44 @@ export function SeatInquiryClient() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="mx-auto mt-8 max-w-sm rounded-[2px] bg-card p-6 text-left"
+            className="mt-8"
           >
-            <p className="mb-4 border-b border-[#85754E]/15 pb-3">
-              <span className="font-reforma-gris text-lg font-semibold tracking-[0.02em] text-[#153E35]">
-                {result.name}
-              </span>
+            {/* Attendee name — confirms "this is you" */}
+            <p className="font-reforma-gris text-lg font-semibold tracking-[0.02em] text-[#153E35]">
+              {result.name}
             </p>
-            {result.rows.length > 0 ? (
-              <dl className="space-y-3">
-                {result.rows.map((row) => (
-                  <div key={row.label} className="flex items-baseline justify-between gap-4">
-                    <dt className="text-sm font-medium text-[#153E35]">{row.label}</dt>
-                    <dd className="font-reforma-gris text-base font-semibold tracking-[0.02em] text-[#85754E]">
-                      {row.value}
-                    </dd>
+
+            {result.days.length > 0 ? (
+              // Day cards: one per day. Three across on sm+, stacked on mobile.
+              // Jun 9 holds two slots (am/pm) side by side inside its card.
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {result.days.map((day) => (
+                  <div
+                    key={day.date}
+                    className="rounded-[2px] bg-card p-5 transition-transform duration-200 hover:-translate-y-1"
+                  >
+                    <p className="font-reforma-gris text-lg font-semibold tracking-[0.02em] text-[#153E35]">
+                      {day.date}
+                    </p>
+                    <p className="mt-0.5 text-xs text-[#153E35]/50">{day.weekday}</p>
+                    <div className="my-4 h-px bg-[#85754E]/15" />
+                    <div className={day.slots.length > 1 ? "flex justify-center gap-6" : ""}>
+                      {day.slots.map((slot) => (
+                        <div key={slot.label}>
+                          <span className="font-sans text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
+                            {slot.label}
+                          </span>
+                          <p className="mt-2 font-reforma-negra text-3xl tracking-[0.05em] text-[#85754E]">
+                            {slot.table}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
-              </dl>
+              </div>
             ) : (
-              <p className="text-sm text-[#153E35]/70">
+              <p className="mt-4 text-sm text-[#153E35]/70">
                 No table assignments are on record yet. Please check back later or speak with the
                 event team.
               </p>

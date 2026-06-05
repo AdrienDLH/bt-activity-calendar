@@ -61,6 +61,8 @@ public/workbox-*.js
 /Wash*.jpg
 
 # Internal source data & assets — NOT for version control
-# (spreadsheets contain attendee PII; high-res map is the 12MB crop source)
+# (spreadsheets contain attendee PII; high-res map is the 12MB crop source;
+#  agenda CSV exports are source data, content already lives in event-data.ts)
 *.xlsx
+*.csv
 /high res map.jpeg

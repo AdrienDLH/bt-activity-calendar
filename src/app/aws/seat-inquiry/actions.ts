@@ -16,13 +16,21 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { AwsSeat } from "@/types/database";
 
-export interface SeatRow {
+/** One table assignment within a day (e.g. label "Table (am)", table "No.3"). */
+export interface SeatSlot {
   label: string;
-  value: string;
+  table: string;
+}
+
+/** A day's worth of assignments — one slot for full-day, two for Jun 9 (am/pm). */
+export interface SeatDay {
+  date: string;
+  weekday: string;
+  slots: SeatSlot[];
 }
 
 export type SeatLookupResult =
-  | { status: "found"; name: string; rows: SeatRow[] }
+  | { status: "found"; name: string; days: SeatDay[] }
   | { status: "not-found" }
   | { status: "invalid" }
   | { status: "error" };
@@ -30,6 +38,13 @@ export type SeatLookupResult =
 // Pragmatic email shape check — lenient enough not to reject valid addresses,
 // strict enough to avoid pointless DB lookups on obvious typos.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// The big number shown in the card is the table identifier only. Source values
+// look like "Table NO.1"; strip a leading "Table" so we don't render the word
+// twice (the card already labels it "Table (all day)" etc.). Returns "" if blank.
+function tableValue(raw: string | null): string {
+  return (raw ?? "").trim().replace(/^table\s*/i, "").trim();
+}
 
 export async function lookupSeat(rawEmail: string): Promise<SeatLookupResult> {
   // Normalise: emails are case-insensitive and shouldn't carry stray spaces.
@@ -55,18 +70,30 @@ export async function lookupSeat(rawEmail: string): Promise<SeatLookupResult> {
       return { status: "not-found" };
     }
 
-    // Only surface sessions that actually have a table assigned; an attendee
-    // may not be seated for every session. (Labels in display order.)
-    const rows: SeatRow[] = [
-      { label: "Jun 8", value: seat.jun_8 },
-      { label: "Jun 9 — Morning", value: seat.jun_9_morning },
-      { label: "Jun 9 — Afternoon", value: seat.jun_9_afternoon },
-      { label: "Jun 10", value: seat.jun_10 },
-    ]
-      .map((r) => ({ label: r.label, value: (r.value ?? "").trim() }))
-      .filter((r) => r.value.length > 0);
+    // Group into day cards. Only include a day/slot that actually has a table
+    // assigned — an attendee may not be seated for every session.
+    const days: SeatDay[] = [];
 
-    return { status: "found", name: seat.name, rows };
+    const jun8 = tableValue(seat.jun_8);
+    if (jun8) {
+      days.push({ date: "Jun 8", weekday: "Monday", slots: [{ label: "Table (all day)", table: jun8 }] });
+    }
+
+    const am = tableValue(seat.jun_9_morning);
+    const pm = tableValue(seat.jun_9_afternoon);
+    const jun9: SeatSlot[] = [];
+    if (am) jun9.push({ label: "Table (am)", table: am });
+    if (pm) jun9.push({ label: "Table (pm)", table: pm });
+    if (jun9.length) {
+      days.push({ date: "Jun 9", weekday: "Tuesday", slots: jun9 });
+    }
+
+    const jun10 = tableValue(seat.jun_10);
+    if (jun10) {
+      days.push({ date: "Jun 10", weekday: "Wednesday", slots: [{ label: "Table (all day)", table: jun10 }] });
+    }
+
+    return { status: "found", name: seat.name, days };
   } catch (err) {
     console.error("[seat-inquiry] unexpected error:", err);
     return { status: "error" };
