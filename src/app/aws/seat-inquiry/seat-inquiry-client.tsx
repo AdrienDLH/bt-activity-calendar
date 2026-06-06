@@ -160,12 +160,12 @@ export function SeatInquiryClient() {
                     <p className="font-reforma-gris text-lg font-semibold tracking-[0.02em] text-[#153E35]">
                       {day.date}
                     </p>
-                    <p className="mt-0.5 text-xs text-[#153E35]/50">{day.weekday}</p>
+                    <p className="mt-0.5 text-sm text-[#153E35]/50">{day.weekday}</p>
                     <div className="my-4 h-px bg-[#85754E]/15" />
                     <div className={day.slots.length > 1 ? "flex justify-center gap-6" : ""}>
                       {day.slots.map((slot) => (
                         <div key={slot.label}>
-                          <span className="font-sans text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
+                          <span className="font-sans text-xs font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
                             {slot.label}
                           </span>
                           <p className="mt-2 font-reforma-negra text-3xl tracking-[0.05em] text-[#85754E]">
@@ -188,7 +188,7 @@ export function SeatInquiryClient() {
             <button
               type="button"
               onClick={handleClear}
-              className="mx-auto mt-6 block text-xs text-[#85754E] underline underline-offset-4 transition-opacity hover:opacity-70"
+              className="mx-auto mt-6 block text-sm text-[#85754E] underline underline-offset-4 transition-opacity hover:opacity-70"
             >
               Not you? Use a different email
             </button>

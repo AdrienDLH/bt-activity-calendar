@@ -65,7 +65,7 @@ export function ResortMap() {
           className="h-auto w-full"
         />
         {/* Zoom affordance — small bronze chip, bottom-right */}
-        <span className="pointer-events-none absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-[2px] bg-[#85754E] px-2 py-1 text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#EAE7E4] opacity-90 transition-opacity group-hover:opacity-100">
+        <span className="pointer-events-none absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-[2px] bg-[#85754E] px-2 py-1 text-xs font-semibold uppercase leading-none tracking-[0.1em] text-[#EAE7E4] opacity-90 transition-opacity group-hover:opacity-100">
           <IconZoomIn className="h-3.5 w-3.5" stroke={2} aria-hidden />
           Tap to zoom
         </span>
@@ -156,14 +156,14 @@ function LegendGrid({ legend, accent }: { legend: MapLegend; accent: string }) {
       {legend.items.map((item, i) => (
         <li key={item.en} className="flex items-start gap-2">
           <span
-            className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold leading-none text-white"
+            className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold leading-none text-white"
             style={{ backgroundColor: accent }}
           >
             {i + 1}
           </span>
           <span className="leading-tight">
-            <span className="block font-kai text-[13px] leading-snug text-[#153E35]">{item.zh}</span>
-            <span className="block text-[11px] leading-tight text-[#153E35]/60">{item.en}</span>
+            <span className="block font-kai text-sm leading-snug text-[#153E35]">{item.zh}</span>
+            <span className="block text-[13px] leading-tight text-[#153E35]/60">{item.en}</span>
           </span>
         </li>
       ))}

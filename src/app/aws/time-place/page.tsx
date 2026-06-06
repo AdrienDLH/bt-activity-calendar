@@ -17,7 +17,7 @@ export default function TimePlacePage() {
     <EventShell backHref="/aws" contentClassName="max-w-2xl">
       {/* ---- Welcome ---- */}
       <section className="text-center">
-        <p className="font-reforma-negra text-xs uppercase tracking-[0.15em] text-luxury-gold sm:text-sm">
+        <p className="font-reforma-negra text-sm uppercase tracking-[0.15em] text-luxury-gold sm:text-base">
           {T.welcomeKicker}
         </p>
         <h1 className="mt-2 font-reforma-negra text-xl uppercase tracking-[0.15em] text-[#153E35] sm:text-2xl">

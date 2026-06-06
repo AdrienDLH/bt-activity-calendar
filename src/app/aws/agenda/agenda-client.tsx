@@ -69,7 +69,7 @@ export function AgendaClient() {
         {/* Day header — mirrors the WeekView day header (h3 + tan pill) */}
         <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1">
           <h3 className="text-lg font-semibold text-[#153E35]">{day.date}</h3>
-          <span className="rounded-[2px] bg-[#DDC9A3] px-2 pb-[5px] pt-[4px] text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
+          <span className="rounded-[2px] bg-[#DDC9A3] px-2 pb-[5px] pt-[4px] text-xs font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
             {day.dayLabel}
           </span>
           {day.theme && (
@@ -93,7 +93,7 @@ function TimelineRow({ session, last }: { session: Session; last: boolean }) {
     <li className="grid grid-cols-[4.5rem_1.25rem_1fr] sm:grid-cols-[5.5rem_1.5rem_1fr]">
       {/* Time — nudged up so its centre lines up with the dot + title */}
       <div className="-mt-[2px] text-right">
-        <span className="font-sans text-xs leading-tight text-[#153E35]/70 sm:text-sm">
+        <span className="font-sans text-sm leading-tight text-[#153E35]/70">
           {session.time}
         </span>
       </div>
@@ -123,7 +123,7 @@ function TimelineRow({ session, last }: { session: Session; last: boolean }) {
             as the rest of the event design system. */}
         {session.description && (
           <div className="mt-3 border-l-2 border-[#85754E]/40 pl-3">
-            <p className="font-sans text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
+            <p className="font-sans text-xs font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
               Thought Starter
             </p>
             <p className="mt-1.5 text-sm italic leading-relaxed text-[#153E35]/75">

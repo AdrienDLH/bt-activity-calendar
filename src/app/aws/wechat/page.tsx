@@ -19,7 +19,7 @@ export default function WechatGuidePage() {
     <EventShell backHref="/aws/time-place" contentClassName="max-w-2xl">
       {/* ---- Header ---- */}
       <section className="text-center">
-        <p className="font-reforma-negra text-xs uppercase tracking-[0.15em] text-luxury-gold sm:text-sm">
+        <p className="font-reforma-negra text-sm uppercase tracking-[0.15em] text-luxury-gold sm:text-base">
           {G.kicker}
         </p>
         <h1 className="mt-2 font-reforma-negra text-xl uppercase tracking-[0.15em] text-[#153E35] sm:text-2xl">
@@ -96,7 +96,7 @@ export default function WechatGuidePage() {
 
       {/* ---- Pro tip callout ---- */}
       <aside className="mt-6 rounded-[2px] border border-[#85754E]/25 bg-[#85754E]/[0.07] p-5 sm:p-6">
-        <p className="font-sans text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
+        <p className="font-sans text-xs font-semibold uppercase leading-none tracking-[0.1em] text-[#85754E]">
           Pro Tip
         </p>
         <p className="mt-2.5 text-sm leading-relaxed text-[#153E35]/85">{G.proTip}</p>
