@@ -11,27 +11,83 @@
  *
  * Edge cases handled: empty/invalid email, not-found, server error, and the
  * in-flight loading state.
+ *
+ * Convenience: after a successful lookup we remember the email in localStorage
+ * (email ONLY — never the seat results, so no attendee data sits at rest, and
+ * we always re-fetch live). On a return visit the email auto-fills and the
+ * lookup runs automatically. A "Not you?" link clears the saved email — also
+ * the safeguard for shared devices.
  */
-import { useState, useTransition } from "react";
+import { useState, useEffect, useRef, useCallback, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconSearch, IconLoader2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { lookupSeat, type SeatLookupResult } from "./actions";
 
+// localStorage key for the remembered email (email only — see note above).
+const STORAGE_KEY = "aws-seat-email";
+
 export function SeatInquiryClient() {
   const [email, setEmail] = useState("");
   const [result, setResult] = useState<SeatLookupResult | null>(null);
   const [isPending, startTransition] = useTransition();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const autoRan = useRef(false); // guard so the auto-lookup runs at most once
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const trimmed = email.trim();
+  // Run a lookup for the given email. On success, remember the email. When an
+  // AUTO-load (from a saved email) comes back definitively not-found, forget the
+  // saved email so a stale entry doesn't keep failing every visit — but never
+  // forget on a transient server error.
+  const runLookup = useCallback((rawEmail: string, isAuto = false) => {
+    const trimmed = rawEmail.trim();
     if (!trimmed) return;
     setResult(null); // clear any previous result so nothing stale shows mid-search
     startTransition(async () => {
       const res = await lookupSeat(trimmed);
       setResult(res);
+      try {
+        if (res.status === "found") {
+          localStorage.setItem(STORAGE_KEY, trimmed);
+        } else if (isAuto && res.status === "not-found") {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      } catch {
+        /* storage may be unavailable (private mode) — feature just no-ops */
+      }
     });
+  }, []);
+
+  // On first mount, if we have a remembered email, fill it and auto-load.
+  useEffect(() => {
+    if (autoRan.current) return;
+    autoRan.current = true;
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    if (saved) {
+      setEmail(saved);
+      runLookup(saved, true);
+    }
+  }, [runLookup]);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    runLookup(email);
+  }
+
+  // "Not you?" — forget the saved email and reset to a clean form.
+  function handleClear() {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    setEmail("");
+    setResult(null);
+    inputRef.current?.focus();
   }
 
   return (
@@ -50,6 +106,7 @@ export function SeatInquiryClient() {
         </label>
         {/* Input border mirrors the calendar's interactive controls (#85754E) */}
         <input
+          ref={inputRef}
           id="seat-email"
           type="email"
           inputMode="email"
@@ -126,6 +183,15 @@ export function SeatInquiryClient() {
                 event team.
               </p>
             )}
+
+            {/* Clear the remembered email — also the shared-device safeguard */}
+            <button
+              type="button"
+              onClick={handleClear}
+              className="mx-auto mt-6 block text-xs text-[#85754E] underline underline-offset-4 transition-opacity hover:opacity-70"
+            >
+              Not you? Use a different email
+            </button>
           </motion.div>
         )}
 
