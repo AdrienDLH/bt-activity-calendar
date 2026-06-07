@@ -211,14 +211,15 @@ const DAY_ONE: DayAgenda = {
     },
     { time: "15:00–15:15", title: COFFEE, venue: "Phoenix Ballroom" },
     {
-      time: "15:15–17:15",
-      title: "Visions from the Field: The Future of Banyan Tree",
-      details: ["GM & DOSM team presentations, and sharing from all"],
+      time: "15:15–16:45",
+      title: "Founders Fireside",
+      details: ["Panel + Q&A"],
       description:
-        "In 2030, what will Banyan Tree mean to a guest that no other brand can offer? What does your property need to become to deliver that? Come prepared to co-create the future of our brand together.",
+        "An intimate session with our Founders. What would you like to learn about Banyan Group?",
       venue: "Phoenix Ballroom",
     },
-    { time: "17:15–17:30", title: "Group Photo Session", venue: "Phoenix Ballroom" },
+    { time: "16:45–17:00", title: "Break — Photo Setup", venue: "Phoenix Ballroom" },
+    { time: "17:00–17:15", title: "Group Photo Session", venue: "Phoenix Ballroom" },
     {
       time: "18:15–20:30",
       title: "Beach BBQ Feast",
@@ -246,16 +247,16 @@ const DAY_THREE: DayAgenda = {
     },
     { time: "8:30–9:00", title: "Arrival", venue: "Phoenix Ballroom" },
     {
-      time: "9:00–9:45",
-      title: "Founders Fireside",
-      details: ["Panel + Q&A"],
+      time: "9:00–11:00",
+      title: "Visions from the Field: The Future of Banyan Tree",
+      details: ["GM & DOSM team presentations, and sharing from all"],
       description:
-        "An intimate session with our Founders. What would you like to learn about Banyan Group?",
+        "In 2030, what will Banyan Tree mean to a guest that no other brand can offer? What does your property need to become to deliver that? Come prepared to co-create the future of our brand together.",
       venue: "Phoenix Ballroom",
     },
-    { time: "9:45–10:45", title: COFFEE, venue: "Phoenix Ballroom" },
+    { time: "11:00–11:15", title: COFFEE, venue: "Phoenix Ballroom" },
     {
-      time: "10:45–12:15",
+      time: "11:15–12:15",
       title: "Leadership Commitments",
       details: [
         "Individual and group work to solidify insights, lock in commitments and unlock resources",
