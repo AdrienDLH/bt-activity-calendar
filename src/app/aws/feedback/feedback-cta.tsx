@@ -25,6 +25,7 @@ import {
   IconCircleCheck,
   IconLoader2,
   IconX,
+  IconArrowRight,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { submitFeedback } from "./actions";
@@ -108,20 +109,20 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
               Three quick questions · anonymous
             </span>
           </span>
-          <span
+          {/* Icon (not a text glyph) so it sits on the row's vertical centre */}
+          <IconArrowRight
+            className="h-5 w-5 shrink-0 text-[#85754E] transition-transform duration-200 group-hover:translate-x-0.5"
+            stroke={1.75}
             aria-hidden
-            className="font-sans text-lg text-[#85754E] transition-transform duration-200 group-hover:translate-x-0.5"
-          >
-            →
-          </span>
+          />
         </button>
       </Dialog.Trigger>
 
-      {/* ---- Bottom sheet ---- */}
+      {/* ---- Centered modal ---- */}
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <Dialog.Content
-          className="fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-t-[2px] bg-luxury-cream px-5 pb-8 pt-6 shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom data-[state=open]:duration-300"
+          className="fixed left-1/2 top-1/2 z-50 max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[2px] bg-luxury-cream px-5 pb-8 pt-6 shadow-xl duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
         >
           {/* Close */}
           <Dialog.Close
