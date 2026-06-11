@@ -8,10 +8,12 @@
  * Mobile-first: content is a single comfortable column; on larger screens it
  * stays centred with generous whitespace (Apple HIG). Square corners throughout.
  *
- * `fitViewport`: locks the layout to one screen height (100dvh) and vertically
- * centres the content, so the footer lockup is ALWAYS in view regardless of the
- * device's height. Used by the landing page. Long pages (agenda) leave it off
- * and scroll naturally.
+ * `fitViewport`: targets a single screen height (100dvh) and vertically centres
+ * the content on larger screens, so the footer lockup sits in view. On mobile
+ * the content is TOP-aligned with a comfortable gap below the logo (centring a
+ * tall block would crowd the logo), and the page may scroll a touch on short
+ * phones rather than clip. Used by the landing page. Long pages (agenda) leave
+ * it off and scroll naturally.
  */
 import Link from "next/link";
 import { IconChevronLeft } from "@tabler/icons-react";
@@ -41,7 +43,7 @@ export function EventShell({
     <div
       className={cn(
         "flex flex-col bg-luxury-cream",
-        fitViewport ? "h-[100dvh] overflow-hidden" : "min-h-screen",
+        fitViewport ? "min-h-[100dvh]" : "min-h-screen",
       )}
     >
       {/* ---- Header: back link (left) + centred logomark ---- */}
@@ -64,7 +66,9 @@ export function EventShell({
       <main
         className={cn(
           "flex flex-1 flex-col px-5",
-          fitViewport ? "min-h-0 justify-center py-6" : "pt-8 sm:pt-12",
+          fitViewport
+            ? "min-h-0 justify-start py-8 sm:justify-center sm:py-6"
+            : "pt-8 sm:pt-12",
         )}
       >
         <div className={`mx-auto w-full ${contentClassName}`}>{children}</div>
