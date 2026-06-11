@@ -24,6 +24,8 @@ import {
 } from "@tabler/icons-react";
 import { EventShell } from "@/components/event/event-shell";
 import { EVENT } from "@/lib/event-data";
+import { FeedbackCta } from "./feedback/feedback-cta";
+import { hasSubmittedFeedback } from "./feedback/actions";
 
 interface Tile {
   label: string;
@@ -49,7 +51,11 @@ const TILES: Tile[] = [
 const CARD_CLASS =
   "group relative isolate flex aspect-square flex-col items-center justify-center gap-3 overflow-hidden rounded-[2px] p-4 no-underline hover:no-underline cursor-pointer transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98]";
 
-export default function EventLandingPage() {
+export default async function EventLandingPage() {
+  // Soft duplicate-prevention: if this browser already submitted feedback
+  // (server-set cookie), the CTA renders a quiet thank-you instead of the form.
+  const feedbackSubmitted = await hasSubmittedFeedback();
+
   return (
     <EventShell fitViewport contentClassName="max-w-[20rem] sm:max-w-sm">
       {/* Date + location (no labels — context is clear) */}
@@ -62,8 +68,14 @@ export default function EventLandingPage() {
         </p>
       </div>
 
+      {/* Feedback survey: prompt card above the tiles → opens a bottom sheet,
+          keeping the single-screen home intact. */}
+      <div className="mt-8">
+        <FeedbackCta alreadySubmitted={feedbackSubmitted} />
+      </div>
+
       {/* 2×2 tile grid */}
-      <nav className="mt-8 grid grid-cols-2 gap-4">
+      <nav className="grid grid-cols-2 gap-4">
         {TILES.map(({ label, Icon, href, bg, imgClass, external }) => {
           const inner = (
             <>

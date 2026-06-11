@@ -123,6 +123,21 @@ export interface AwsSeat {
 }
 
 /**
+ * AwsFeedback - One anonymous feedback submission for the AWS 2026 event.
+ *
+ * Three open-text answers, no identifying fields. Lives in a deny-all-RLS table
+ * written only via the service-role server action — never read by the client.
+ */
+export interface AwsFeedback {
+  id: string;
+  enjoyed: string | null;
+  improve: string | null;
+  other: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
+/**
  * Database schema type for Supabase client
  *
  * This provides full type safety for all database operations.
@@ -154,6 +169,11 @@ export interface Database {
         Row: AwsSeat;
         Insert: Omit<AwsSeat, "id" | "created_at">;
         Update: Partial<Omit<AwsSeat, "id" | "created_at">>;
+      };
+      aws_feedback: {
+        Row: AwsFeedback;
+        Insert: Omit<AwsFeedback, "id" | "created_at">;
+        Update: Partial<Omit<AwsFeedback, "id" | "created_at">>;
       };
     };
   };
