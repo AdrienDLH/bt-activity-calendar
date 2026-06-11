@@ -106,7 +106,7 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
               Share Your Feedback
             </span>
             <span className="mt-0.5 block font-sans text-xs text-[#153E35]/60">
-              Three quick questions · anonymous
+              Three quick questions
             </span>
           </span>
           {/* Icon (not a text glyph) so it sits on the row's vertical centre */}
@@ -153,8 +153,7 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
                 Share Your Feedback
               </Dialog.Title>
               <Dialog.Description className="mt-2 font-sans text-sm text-[#153E35]/70">
-                Your thoughts help us shape future gatherings. It takes less than a minute, and it’s
-                completely anonymous.
+                Your thoughts help us shape future gatherings. It takes less than a minute.
               </Dialog.Description>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-5 text-left">
