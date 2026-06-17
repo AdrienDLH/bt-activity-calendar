@@ -31,6 +31,7 @@ export interface FeedbackInput {
   enjoyed: string;
   improve: string;
   other: string;
+  reflection: string;
 }
 
 export type FeedbackResult =
@@ -61,9 +62,10 @@ export async function submitFeedback(input: FeedbackInput): Promise<FeedbackResu
   const enjoyed = clean(input?.enjoyed ?? "");
   const improve = clean(input?.improve ?? "");
   const other = clean(input?.other ?? "");
+  const reflection = clean(input?.reflection ?? "");
 
   // Require at least one non-empty answer — never store a fully empty row.
-  if (!enjoyed && !improve && !other) {
+  if (!enjoyed && !improve && !other && !reflection) {
     return { status: "empty" };
   }
 
@@ -81,10 +83,11 @@ export async function submitFeedback(input: FeedbackInput): Promise<FeedbackResu
           enjoyed: string | null;
           improve: string | null;
           other: string | null;
+          reflection: string | null;
           user_agent: string | null;
         }) => Promise<{ error: { message: string } | null }>;
       }
-    ).insert({ enjoyed, improve, other, user_agent: userAgent });
+    ).insert({ enjoyed, improve, other, reflection, user_agent: userAgent });
 
     if (error) {
       console.error("[feedback] insert failed:", error.message);

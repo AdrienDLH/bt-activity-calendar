@@ -125,7 +125,7 @@ export interface AwsSeat {
 /**
  * AwsFeedback - One anonymous feedback submission for the AWS 2026 event.
  *
- * Three open-text answers, no identifying fields. Lives in a deny-all-RLS table
+ * Four open-text answers, no identifying fields. Lives in a deny-all-RLS table
  * written only via the service-role server action — never read by the client.
  */
 export interface AwsFeedback {
@@ -133,6 +133,7 @@ export interface AwsFeedback {
   enjoyed: string | null;
   improve: string | null;
   other: string | null;
+  reflection: string | null;
   user_agent: string | null;
   created_at: string;
 }

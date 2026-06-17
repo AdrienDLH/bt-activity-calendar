@@ -5,7 +5,7 @@
  *
  * Lives above the four navigation tiles on the /aws home. To preserve the
  * home's signature single-screen layout, the survey itself is NOT inline — the
- * card just opens a bottom sheet containing the three open questions.
+ * card just opens a bottom sheet containing the open questions.
  *
  * Submission goes to a service-role server action (./actions) that writes to the
  * deny-all-RLS `aws_feedback` table; nothing is read back to the browser. The
@@ -30,22 +30,39 @@ import {
 import { Button } from "@/components/ui/button";
 import { submitFeedback } from "./actions";
 
-/** The three open questions. Edit the copy here. */
-const QUESTIONS = [
+/**
+ * The open questions. Edit the copy here.
+ *
+ * `rows` optionally overrides the textarea height (the reflection question gets
+ * a taller box since it invites a fuller answer).
+ */
+const QUESTIONS: {
+  key: "enjoyed" | "improve" | "other" | "reflection";
+  label: string;
+  placeholder: string;
+  rows?: number;
+}[] = [
   {
-    key: "enjoyed" as const,
+    key: "enjoyed",
     label: "What did you enjoy most about the event?",
     placeholder: "The moments, sessions or people that stood out…",
   },
   {
-    key: "improve" as const,
+    key: "improve",
     label: "What could we improve for next time?",
     placeholder: "Anything that would have made it better…",
   },
   {
-    key: "other" as const,
+    key: "other",
     label: "Anything else you’d like to share?",
     placeholder: "Other thoughts, ideas or suggestions…",
+  },
+  {
+    key: "reflection",
+    label:
+      "Reflecting on the final session, what is the one insight that will change how you lead as a Banyan Tree leader — and what do you need to make it happen?",
+    placeholder: "Your reflection, and the support you need to act on it…",
+    rows: 6,
   },
 ];
 
@@ -60,7 +77,7 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
   const [done, setDone] = useState(false); // success within this session
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [values, setValues] = useState({ enjoyed: "", improve: "", other: "" });
+  const [values, setValues] = useState({ enjoyed: "", improve: "", other: "", reflection: "" });
 
   const submitted = alreadySubmitted || done;
   const hasAnyAnswer = Object.values(values).some((v) => v.trim().length > 0);
@@ -106,7 +123,7 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
               Share Your Feedback
             </span>
             <span className="mt-0.5 block font-sans text-xs text-[#153E35]/60">
-              Three quick questions
+              Four quick questions
             </span>
           </span>
           {/* Icon (not a text glyph) so it sits on the row's vertical centre */}
@@ -157,7 +174,7 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
               </Dialog.Description>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-5 text-left">
-                {QUESTIONS.map(({ key, label, placeholder }) => (
+                {QUESTIONS.map(({ key, label, placeholder, rows }) => (
                   <div key={key}>
                     <label
                       htmlFor={`fb-${key}`}
@@ -173,7 +190,7 @@ export function FeedbackCta({ alreadySubmitted }: { alreadySubmitted: boolean })
                         if (error) setError(null);
                       }}
                       placeholder={placeholder}
-                      rows={3}
+                      rows={rows ?? 3}
                       className={FIELD_CLASS}
                     />
                   </div>
