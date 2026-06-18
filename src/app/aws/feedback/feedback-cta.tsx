@@ -43,6 +43,13 @@ const QUESTIONS: {
   rows?: number;
 }[] = [
   {
+    key: "reflection",
+    label:
+      "Reflecting on the final session, what is the one insight that will change how you lead as a Banyan Tree leader — and what do you need to make it happen?",
+    placeholder: "Your reflection, and the support you need to act on it…",
+    rows: 6,
+  },
+  {
     key: "enjoyed",
     label: "What did you enjoy most about the event?",
     placeholder: "The moments, sessions or people that stood out…",
@@ -56,13 +63,6 @@ const QUESTIONS: {
     key: "other",
     label: "Anything else you’d like to share?",
     placeholder: "Other thoughts, ideas or suggestions…",
-  },
-  {
-    key: "reflection",
-    label:
-      "Reflecting on the final session, what is the one insight that will change how you lead as a Banyan Tree leader — and what do you need to make it happen?",
-    placeholder: "Your reflection, and the support you need to act on it…",
-    rows: 6,
   },
 ];
 
